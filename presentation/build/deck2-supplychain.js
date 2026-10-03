@@ -41,7 +41,18 @@ const FA = require("react-icons/fa6");
     s.addText("Disrupting supply chain attacks on npm and GitHub Actions", { x: M, y: 4.35, w: 11.5, h: 0.6, fontFace: "Calibri", fontSize: 22, color: HEX.amber, italic: true, isTextBox: true });
     s.addText([{ text: "Technical case study", options: { color: HEX.sub } }, { text: "   ·   ", options: { color: HEX.muted } }, { text: "Rod Trent", options: { color: HEX.sub } }, { text: "   ·   ", options: { color: HEX.muted } }, { text: "GitHub Security Lab", options: { color: HEX.sub } }],
       { x: M, y: 5.5, w: 11, h: 0.4, fontFace: "Calibri", fontSize: 14, isTextBox: true });
-    s.addNotes("Hook: last year a single phished maintainer turned into malware in hundreds of packages within hours. This talk is about how GitHub and npm are breaking that chain - not with one silver bullet, but by cutting every link. Two live demos: npm blocking a malicious install, and a CI pipeline getting hijacked by an issue title - then fixed.");
+    s.addNotes(
+`[TITLE — ~45 sec]
+
+"Thanks for having me. Picture this: a single open-source maintainer gets phished on a Tuesday. By Wednesday, malware is riding inside hundreds of packages that millions of projects depend on. That's not hypothetical — that's the pattern we saw repeatedly over the past year, with worms like Shai-Hulud and the tj-actions compromise.
+
+The scary thing about these attacks is that they're self-replicating. They use the ecosystem's OWN trust to spread — the same automation and tokens that make open source fast are what the malware hijacks.
+
+This talk is about how GitHub and npm are breaking that chain. And the key idea is there's no single silver bullet — it's about cutting every individual link in the attack, so the whole thing falls apart.
+
+I'll make it concrete with two live demos: first, npm literally blocking a malicious package from stealing credentials on install. And second, a CI pipeline getting hijacked by nothing more than an issue title — and then the one-line fix. Let's start with how the attack actually works."
+
+[Advance to slide 2.]`);
   }
 
   // ================= SLIDE 2 — The problem / anatomy =================
@@ -68,7 +79,24 @@ const FA = require("react-icons/fa6");
     }
     s.addText([{ text: "The loop is the danger: ", options: { bold: true, color: HEX.redLt } }, { text: "stage 3 feeds stage 1 again. That's how a worm like 2025's Shai-Hulud hit hundreds of packages.", options: { color: HEX.sub } }],
       { x: M, y: 5.8, w: W - 2 * M, h: 0.5, fontFace: "Calibri", fontSize: 14, align: "center", isTextBox: true });
-    s.addNotes("Establish the problem FIRST. Draw the loop: compromise -> steal -> propagate -> which causes more compromise. This self-replication is why these spread so fast. Reference the real pattern (Shai-Hulud npm worm, tj-actions) without overclaiming numbers. The rest of the talk: break each link.");
+    s.addNotes(
+`[THE PROBLEM — ~90 sec]
+
+"Here's the anatomy of a modern supply-chain attack. It's three stages, and the dangerous part is that it's a loop.
+
+Stage one, compromise. The attacker gets a foothold — usually by phishing a maintainer, or by abusing a misconfigured CI pipeline. Now they can publish code as someone you trust.
+
+Stage two, steal credentials. The malicious code — maybe a postinstall script, maybe a hijacked workflow — harvests secrets: npm publish tokens, cloud keys, the GitHub token sitting in CI.
+
+Stage three, propagate. And this is the kicker — they use those stolen tokens to inject the exact same payload into EVERY other package that maintainer can publish.
+
+Now follow the arrow back. Stage three feeds stage one all over again, on a whole new set of victims. That's a worm. That's how one phished developer becomes malware in hundreds of packages within hours — because each infection automatically creates the next.
+
+[Point at the callout.] That self-replication is the problem. You can't just clean up one package; by the time you notice, it's spread. So the strategy — and this is the roadmap for the whole talk — is to attack the LOOP. Break any link, and the chain reaction stops. The rest of the talk is: here's a defense for each link.
+
+But first — why should you, personally, care?"
+
+[Advance to slide 3.]`);
   }
 
   // ================= SLIDE 3 — Why it matters =================
@@ -99,7 +127,18 @@ const FA = require("react-icons/fa6");
       s.addText(b, { x: wx, y: 5.5, w: ww, h: 1.0, fontFace: "Calibri", fontSize: 10.5, color: HEX.sub, isTextBox: true });
       wx += ww + 0.3;
     }
-    s.addNotes("Why care? Because trust is implicit and constant. Three moments where you hand over control - install, CI, release - and the blast radius reaches everyone downstream. The defenses we'll cover each target one of these moments.");
+    s.addNotes(
+`[WHY IT MATTERS — ~60 sec]
+
+"Here's why this is everyone's problem, not just big maintainers'. You run far more code than you read.
+
+Look at the numbers. A typical application pulls in thousands of transitive dependencies — code written by strangers you'll never meet. Once a compromise starts, it spreads ecosystem-wide in hours, not weeks. And the number of lines of all that dependency code most teams actually review? Zero.
+
+So we extend an enormous amount of trust without ever noticing. Three moments, on the bottom. Every install — npm install runs third-party code on your machine, with your permissions and your environment variables. Every CI run — your pipeline holds the real keys: publish tokens, cloud creds, a writable GitHub token. Every release — a compromised publish flows straight to everyone downstream, automatically. And everyone downstream inherits the risk of every dependency you ever added.
+
+That's the exposure. The good news is that each of those moments is now a place we can put up a defense — which is exactly what GitHub and npm did. Here's the strategy."
+
+[Advance to slide 4.]`);
   }
 
   // ================= SLIDE 4 — The strategy =================
@@ -122,7 +161,20 @@ const FA = require("react-icons/fa6");
       s.addText(def, { x: M + 4.5, y: y + 0.18, w: W - 2 * M - 4.8, h: 0.9, fontFace: "Calibri", fontSize: 13, color: HEX.sub, valign: "middle", isTextBox: true });
       y += 1.4;
     }
-    s.addNotes("This is the map for the whole talk. Same kill chain as slide 2, now with a defense on every link. I'll go deep on two of these live - install scripts (steal) and workflow injection (compromise/steal) - and summarize the rest. Tell them you'll demo the bold ones.");
+    s.addNotes(
+`[THE STRATEGY — ~60 sec]
+
+"So here's the map for the rest of the talk. It's the same kill chain from a minute ago — compromise, steal credentials, propagate — but now with the 2026 defenses laid on top of each link.
+
+On the 'compromise' link: npm now puts high-impact accounts into a 72-hour read-only mode after a suspicious email change or 2FA recovery, safer checkout defaults, and policies for who can trigger workflows.
+
+On the 'steal credentials' link — this is where I'll spend the most time — install scripts are off by default in npm 12, trusted publishing with OIDC removes the long-lived token entirely, and there's a network firewall for Actions.
+
+On the 'propagate' link: staged publishing with a 2FA gate, Dependabot cooldown, and instant credential revocation for incident response.
+
+No single one of these stops everything. Together, they make the attack expensive at every step. I'm going to demo two of these live — install scripts, and workflow injection — and summarize the rest. Let's do the biggest one first."
+
+[Advance to slide 5.]`);
   }
 
   // ================= SLIDE 5 — DEMO 1 setup =================
@@ -145,7 +197,18 @@ const FA = require("react-icons/fa6");
       s.addText([mono("", {})], { x, y: 6.0, w: 0.1, h: 0.1, isTextBox: true });
       x += cw + 0.3;
     }
-    s.addNotes("Set up Demo 1. Explain postinstall: it's arbitrary code that runs on install. Show the malicious package.json. This is exactly how real worms harvest and spread. Next slide is the live run - npm 11 vs npm 12.");
+    s.addNotes(
+`[DEMO 1 SETUP — ~60 sec]
+
+"Let's talk about the attacker's single favorite door: install scripts.
+
+When you run npm install, packages are allowed to run 'lifecycle scripts' — and the one that matters here is postinstall. It's arbitrary code that executes automatically, as soon as the package lands, with your shell, your environment, your tokens. No prompt. No review. You typed 'npm install' and something ran.
+
+Look at the package.json on the slide — this is my stand-in malicious dependency, color-utilz. All it takes is that one 'postinstall' line pointing at a script, and now that script runs on every machine and every CI job that installs it. In a real attack, steal.js harvests your environment, POSTs your tokens to the attacker, and then re-publishes itself into your packages — that's stages two and three of the loop, happening silently during a routine install.
+
+The three properties on the bottom are why attackers love it: it runs silently, it has full access to your environment, and it spreads instantly. For years, this was on by default. Watch what npm 12 does about it."
+
+[Advance to slide 6 — run the demo.]`);
   }
 
   // ================= SLIDE 6 — DEMO 1 results =================
@@ -168,7 +231,24 @@ const FA = require("react-icons/fa6");
       { x: rx + 0.25, y: 2.2, w: W - rx - M - 0.5, h: 3.9, fontSize: 12.5, isTextBox: true, valign: "top" });
     await iconChip(s, FA.FaCircleCheck, rx + 0.25, 5.75, 0.5, HEX.green);
     s.addText("Script never ran. You decide, explicitly.", { x: rx + 0.9, y: 5.78, w: 5, h: 0.45, fontFace: "Calibri", fontSize: 12.5, color: HEX.greenLt, bold: true, valign: "middle", isTextBox: true });
-    s.addNotes("DEMO. run-demo.ps1. Act 1 on npm 11: the postinstall fires and 'steals' the fake token. Act 2 on npm 12: identical command, script is BLOCKED by default (allowScripts off). You review with `npm install-scripts ls` and approve only what you trust. Note: npm 12 needs Node >= 24.15. BACKUP: screenshots in demos/backup if the live run fails. This is the single highest-impact default change.");
+    s.addNotes(
+`[LIVE DEMO 1 — ~3 min]  >>> SWITCH TO TERMINAL <<<
+Command:  cd demos\\supply-chain\\npm-install-scripts ; .\\run-demo.ps1
+(Prereq: node -v must be >= 24.15. Run '.\\run-demo.ps1 -Prep' once on wifi beforehand.)
+
+"Same project, same dependency, two different versions of npm. Watch the difference.
+
+[ACT 1 — npm 11.] Here's today's default for most people. I run npm install...
+
+[Let it run.] ...and there it goes. The postinstall fired. It found my NPM_TOKEN — that's a fake one for the demo — and it's telling us exactly what it would do: POST those credentials to an attacker server, and re-publish itself into my packages. Game over, and all I did was install a dependency. Your credentials are gone before you even read the output.
+
+[ACT 2 — npm 12.] Now the identical command, on npm 12.
+
+[Let it run.] Look at that. 'One package had install scripts blocked.' The script did not run. npm 12 flips the default — install scripts are OFF unless you explicitly allow them. You stay in control: you run 'npm install-scripts ls' to see what wanted to run, and you approve only the packages you actually trust, which gets recorded in your package.json.
+
+This is the single highest-impact change in the whole talk, because it closes the easiest, most-used door by DEFAULT — it protects people who do nothing. The attacker's favorite vector just stopped working for free."
+
+[BACKUP: demos/backup has captured output if the live run fails. Advance to slide 7.]`);
   }
 
   // ================= SLIDE 7 — credential theft in CI (bridge to CodeQL) =================
@@ -193,7 +273,18 @@ const FA = require("react-icons/fa6");
     await iconChip(s, FA.FaMagnifyingGlassChart, M + 0.3, 5.25, 0.9, HEX.green);
     s.addText([{ text: "Detect before you ship.  ", options: { bold: true, color: HEX.greenLt } }, { text: "CodeQL's ", options: { color: HEX.sub } }, mono("actions/code-injection", { color: HEX.ink }), { text: " and ", options: { color: HEX.sub } }, mono("actions/untrusted-checkout", { color: HEX.ink }), { text: " queries catch both patterns in the PR. One toolchain, code and CI.", options: { color: HEX.sub } }],
       { x: M + 1.5, y: 5.15, w: W - 2 * M - 1.8, h: 1.1, fontFace: "Calibri", fontSize: 14, valign: "middle", isTextBox: true });
-    s.addNotes("Explicit bridge to the CodeQL talk for consistency across the two presentations. Two attack patterns on CI. We can PREVENT them with defaults (next slides) AND DETECT them with CodeQL. Next slide demos the attack live.");
+    s.addNotes(
+`[CI IS THE OTHER DOOR — ~60 sec]
+
+"Now, install scripts are about your laptop and your build. But attackers often don't even need that — because your CI pipeline already holds the keys. Your workflows have publish tokens and a writable GitHub token sitting right there.
+
+There are two classic ways in. On the left, script injection: an attacker-controlled value — like an issue title or a pull-request branch name — gets pasted into a shell command in a workflow and executes. On the right, the 'pwn request': a workflow triggered by pull_request_target runs code from a FORK, but with the base repository's secrets and a write token in scope. So untrusted code runs in a trusted context.
+
+Here's the nice connection — and it ties directly to my CodeQL talk. We can DETECT both of these before they ship. CodeQL's 'code-injection' and 'untrusted-checkout' queries flag exactly these patterns, right in the pull request. So it's one toolchain across both surfaces: your application code and your CI.
+
+Let me show you the script-injection one live — because it's genuinely a little shocking how easy it is."
+
+[Advance to slide 8 — run Demo 2.]`);
   }
 
   // ================= SLIDE 8 — DEMO 2 =================
@@ -217,7 +308,20 @@ const FA = require("react-icons/fa6");
     s.addText([mono("env:\n  TITLE: ", { color: HEX.sub }), mono("${{ github.event.issue.title }}", { color: HEX.greenLt }), mono('\nrun: |\n  echo "Thanks: $TITLE"', { color: HEX.sub })], { x: rx + 0.25, y: 3.7, w: W - rx - M - 0.5, h: 1.2, fontSize: 12, isTextBox: true, valign: "top" });
     await iconChip(s, FA.FaShieldHalved, rx + 0.25, 4.9, 0.5, HEX.green);
     s.addText("Shell treats $TITLE as data, never code", { x: rx + 0.9, y: 4.88, w: 5, h: 0.6, fontFace: "Calibri", fontSize: 11.5, color: HEX.greenLt, bold: true, valign: "middle", isTextBox: true });
-    s.addNotes("DEMO 2 (fast). On the public demo repo, open an issue with the payload title. The Issue triage workflow runs and the log literally prints 'PWNED as runner' and the base64 secret - proving arbitrary execution. Then show the fix: pass input through an env var so the shell never parses it. BACKUP: demos/backup/actions-injection-run-log.txt. CodeQL flagged this as actions/code-injection/critical.");
+    s.addNotes(
+`[LIVE DEMO 2 — ~2.5 min]  >>> BROWSER: github.com/rod-trent/octo-notes-demo <<<
+
+"This repo has a workflow that greets people when they open an issue. Looks harmless. Watch what happens when the ISSUE TITLE itself is the attack.
+
+[Open a new issue with the payload title on the slide — or show it pre-opened.] The title isn't really a title; it's shell. It closes the echo string, then runs its own commands: print who I am, and dump a secret.
+
+[Go to Actions → Issue triage → the run → expand the step.] And there it is in the log — 'PWNED as runner' — that's arbitrary code executing on the runner. And right below it, the base64 of DEPLOY_TOKEN — a fake secret, but it proves an attacker could exfiltrate a real one. All from typing an issue title. No code access, no login.
+
+Why did this happen? Look at the vulnerable version on the left. The expression — github.event.issue.title — gets substituted directly into the shell script BEFORE bash runs. So whatever the attacker types becomes code.
+
+The fix, on the right, is beautifully boring. Pass the title in as an environment VARIABLE, and reference it as a shell variable — dollar-TITLE. Now the shell treats it as inert data, never as code. Same output, zero injection. I've actually opened that fix as a pull request on this repo, and CodeQL flagged the original as 'code-injection, critical' — prevention and detection, together."
+
+[BACKUP: demos/backup/actions-injection-run-log.txt. Advance to slide 9.]`);
   }
 
   // ================= SLIDE 9 — harden the pipeline =================
@@ -241,7 +345,22 @@ const FA = require("react-icons/fa6");
       s.addText(b, { x: x + 1.2, y: y + 0.75, w: cw - 1.5, h: 1.1, fontFace: "Calibri", fontSize: 12.5, color: HEX.sub, isTextBox: true });
       i++;
     }
-    s.addNotes("The prevention layer. These are DEFAULT changes - the ecosystem gets safer even for people who do nothing. Call out the checkout change specifically: the opt-out flag is deliberately ugly so it's obvious in review and to CodeQL. My hardened workflows pin everything to SHA.");
+    s.addNotes(
+`[PREVENTION: SAFE DEFAULTS — ~60 sec]
+
+"That demo was detection and a manual fix. But the bigger wins are the DEFAULTS that changed in 2026 — because they protect everyone, even people who never touch their config.
+
+Safer checkout — this is the big one. actions/checkout now REFUSES to check out untrusted fork code on the dangerous triggers, unless you add a flag literally called 'allow-unsafe-pr-checkout'. And that ugly name is intentional — it's designed to scream in code review and to static analysis, so nobody adds it by accident.
+
+Trigger policies — enterprises and orgs can now centrally control who and what is allowed to trigger workflows.
+
+Read-only cache — untrusted triggers can no longer poison the Actions cache to smuggle code into a privileged job.
+
+And pin to SHA — this is a best practice you should adopt today: pin third-party actions to a full commit SHA, not a mutable tag like v4, so a compromised tag can't silently change what runs. All my hardened reference workflows in the repo do this.
+
+Those shut doors. But the strongest move is to make sure there's nothing worth stealing in the first place."
+
+[Advance to slide 10.]`);
   }
 
   // ================= SLIDE 10 — kill the credential =================
@@ -263,7 +382,20 @@ const FA = require("react-icons/fa6");
       s.addText(b, { x: M + 1.3, y: y + 0.62, w: W - 2 * M - 1.6, h: 0.7, fontFace: "Calibri", fontSize: 12.5, color: HEX.sub, isTextBox: true });
       y += 1.55;
     }
-    s.addNotes("The strongest prevention: eliminate the secret. OIDC trusted publishing means there's no token sitting in CI to steal - this is the big one for maintainers. Staged publishing adds a human+2FA gate. And when something does go wrong, one-click revocation limits the damage.");
+    s.addNotes(
+`[PREVENTION: KILL THE TOKEN — ~60 sec]
+
+"The whole attack runs on stolen credentials. So the strongest defense is simple: if there's no long-lived credential to steal, the kill chain loses its fuel.
+
+Trusted publishing with OIDC — this is the big one for maintainers. Instead of storing a long-lived NPM_TOKEN in your repo, npm exchanges a short-lived identity token from GitHub at the moment of publish. There is no secret sitting in CI to leak — and as a bonus, you get signed provenance automatically, so consumers can verify where the package was built.
+
+Staged publishing with 2FA — you run 'npm stage publish', and the release sits in a queue until a human approves it with a 2FA challenge. So even if your CI is fully compromised, it can't push a release on its own. You can even make a publisher 'stage-only' so direct publishes are rejected outright.
+
+And instant revocation — when something does go wrong, self-service tools let you revoke every credential across an enterprise at once: personal access tokens, OAuth, and app tokens. That turns a multi-day incident into a fast one.
+
+Even with all that, a bad version can still slip out somewhere. So the last layer is about not catching it yourself."
+
+[Advance to slide 11.]`);
   }
 
   // ================= SLIDE 11 — slow the blast radius =================
@@ -286,7 +418,20 @@ const FA = require("react-icons/fa6");
     }
     s.addText([{ text: "Defense in depth: ", options: { bold: true, color: HEX.purple } }, { text: "even if a bad version ships, you don't install it on day one.", options: { color: HEX.sub } }],
       { x: M, y: 6.0, w: W - 2 * M, h: 0.4, fontFace: "Calibri", fontSize: 14, align: "center", isTextBox: true });
-    s.addNotes("Containment layer. Cooldown is a simple, powerful idea: delay non-security updates by a few days so the community can catch malicious releases first. Stress that SECURITY updates are exempt - no delay for real fixes. This is the last link: slow propagation to the consumer.");
+    s.addNotes(
+`[CONTAINMENT: COOLDOWN — ~45 sec]
+
+"Last link in the chain — the consumer. Here's a simple but powerful idea: don't adopt a brand-new release on day zero.
+
+Most malicious releases get caught and pulled within hours to a few days. So if you just wait a little, you let the whole ecosystem's detection win the race for you.
+
+That's Dependabot cooldown. In your dependabot.yml, you set a cooldown — here, three days for normal updates, fourteen for major versions. A new release has to age past that window before Dependabot even opens the PR.
+
+The critical caveat — and please hear this one — SECURITY updates are never delayed. Cooldown only applies to routine version bumps. Real security fixes still land immediately, so you're not trading safety for safety.
+
+It's pure defense in depth: even if a malicious version ships, you're simply not installing it on the day it's most dangerous. Let me pull it all together."
+
+[Advance to slide 12.]`);
   }
 
   // ================= SLIDE 12 — impact =================
@@ -309,7 +454,16 @@ const FA = require("react-icons/fa6");
     };
     await render(left, M);
     await render(right, M + colW + 0.5);
-    s.addNotes("Pull it together. Left: each kill-chain link is now weaker. Right: concrete wins per audience. The meta-point: no silver bullet, but layered defaults that make the whole ecosystem safer without every developer having to be a security expert.");
+    s.addNotes(
+`[IMPACT — ~45 sec]
+
+"So what actually gets better? On the left, each link in the kill chain is now weaker. The easy doors close — install scripts off, fork checkout refused, cache read-only, all by default. There are fewer secrets to steal — OIDC and staged publishing remove the long-lived tokens attacks depend on. And the blast radius is smaller — cooldown and instant revocation slow and contain anything that does get through.
+
+On the right, concrete wins per audience. Maintainers get account-takeover protection and a 2FA publish gate out of the box. Organizations get trigger policies and enterprise-wide revocation for real incident response. And the whole ecosystem benefits, because every door that closes upstream protects everyone downstream.
+
+The meta-point: there's no silver bullet here. It's layered, secure-by-default change that makes the entire ecosystem safer — without requiring every developer to become a security expert. Here's what to remember."
+
+[Advance to slide 13.]`);
   }
 
   // ================= SLIDE 13 — takeaways =================
@@ -329,7 +483,22 @@ const FA = require("react-icons/fa6");
     card(s, M, 5.75, W - 2 * M, 1.0, HEX.panel);
     s.addText([{ text: "Do next:  ", options: { bold: true, color: HEX.greenLt } }, { text: "upgrade to npm 12 · adopt OIDC trusted publishing · pin actions to SHA · turn on CodeQL for your workflows.", options: { color: HEX.sub } }],
       { x: M + 0.3, y: 5.9, w: W - 2 * M - 0.6, h: 0.7, fontFace: "Calibri", fontSize: 14, valign: "middle", isTextBox: true });
-    s.addNotes("Close on three takeaways - 'make the attack expensive at every step.' Concrete next steps the audience can act on Monday. Tie back to the CodeQL talk: prevention (these defaults) plus detection (CodeQL) is the complete story. Thank them, invite questions.");
+    s.addNotes(
+`[TAKEAWAY — ~45 sec]
+
+"Three things to walk out with. The theme is: make the attack expensive at every step.
+
+One: there's no single fix — it's layers. Each default change cuts one link: compromise, credential theft, or propagation. Break enough links and the self-replicating loop can't sustain itself.
+
+Two: secure-by-default wins. The biggest gains protect the people who change nothing — install scripts off, checkout safe. That's how you move an entire ecosystem, not just the security-conscious few.
+
+Three: kill the long-lived token. If you do one thing after this talk, adopt OIDC trusted publishing. The thing attackers steal simply stops existing.
+
+Concretely, on the bottom: upgrade to npm 12, adopt trusted publishing, pin your actions to a SHA, and turn on CodeQL for your workflows. That last one is the bridge to my other talk — prevention, which is everything we just covered, PLUS detection with CodeQL, is the complete story.
+
+Thank you — I'm happy to take questions."
+
+[END. Invite Q&A — see SPEAKER-CHEATSHEET.md.]`);
   }
 
   const out = "C:/Code/GHJ/presentation/Supply-Chain-Breaking-the-Chain.pptx";

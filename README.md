@@ -26,8 +26,9 @@ under `demos/octo-notes-demo/`.
 
 ```
 presentation/
-  CodeQL-Find-the-Bug-Class.pptx          # Deck 1 (12 slides, speaker notes on every slide)
-  Supply-Chain-Breaking-the-Chain.pptx    # Deck 2 (13 slides, speaker notes on every slide)
+  CodeQL-Find-the-Bug-Class.pptx          # Deck 1 (12 slides, FULL talk script in notes)
+  Supply-Chain-Breaking-the-Chain.pptx    # Deck 2 (13 slides, FULL talk script in notes)
+  One-Pager-Leave-Behind.pptx / .pdf      # 2-page handout (one page per talk)
   build/                                   # generator scripts (pptxgenjs) + QA renders
 demos/
   octo-notes-demo/        # the vulnerable app, model pack, custom queries, workflows
@@ -41,6 +42,10 @@ demos/
 SPEAKER-CHEATSHEET.md     # one page: structure, timings, likely Q&A
 ```
 
+Every slide carries a **full, word-for-word speaker script** in its notes (open the
+Notes pane or use Presenter View), including demo cues, backup-plan pointers, and slide
+transitions.
+
 ## Rebuilding the decks
 
 ```bash
@@ -48,6 +53,7 @@ cd presentation/build
 npm install --ignore-scripts        # pptxgenjs, react-icons, sharp
 NODE_PATH="$PWD/node_modules" node deck1-codeql.js
 NODE_PATH="$PWD/node_modules" node deck2-supplychain.js
+NODE_PATH="$PWD/node_modules" node onepager.js
 ```
 
 ## Safety note
