@@ -77,7 +77,10 @@ Two talks, three live demos. Work top to bottom. Boxes you can tick: `[ ]`.
 - [ ] Confirm: npm 11 runs the postinstall ("harvested … / would POST / would re-publish");
   npm 12 **blocks** it.
 
-**Demo 2 — live workflow injection (needs network)**
+**Slide 8 is a walk-through, not a live demo** — you just talk over the vulnerable-vs-hardened
+slide. The live attack below is now **OPTIONAL** (only if they ask to see it fire).
+
+**Optional live Actions injection (needs network)**
 - [ ] **Enable the demo workflow** (it's disabled by default):
   ```bash
   gh workflow enable "Issue triage (DEMO - vulnerable)" -R rod-trent/octo-notes-demo
@@ -92,8 +95,8 @@ Two talks, three live demos. Work top to bottom. Boxes you can tick: `[ ]`.
   on `main`, plus the merged PR #2.
 - [ ] **Backup ready:** `demos/backup/actions-injection-run-log.txt` (a captured PWNED run).
 
-**Run order on stage:** slides 1–4 → **demo 1** (slides 5–6) → slide 7 → **demo 2** (slide 8)
-→ slides 9–13 → Q&A.
+**Run order on stage:** slides 1–4 → **live demo** (slides 5–6) → slide 7 → **walk-through**
+(slide 8, not performed) → slides 9–13 → Q&A. (Offer the live injection only if asked.)
 
 ---
 

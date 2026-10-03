@@ -41,7 +41,16 @@ demos/
   RUNBOOK-SupplyChain.md
 SPEAKER-CHEATSHEET.md     # one page: structure, timings, likely Q&A
 DRY-RUN-CHECKLIST.md      # day-of: pre-flight, per-demo rehearsal, teardown, panic card
+prep/                     # FINAL-LOOP prep beyond the slides:
+  01-Security-Lab-Research-Brief.md   # mission, programs, stats — "why the Lab"
+  02-Candidate-Questions.md           # questions to ask them
+  03-Technical-QA-Bank.md             # hardened follow-ups + interrupt handling
+  04-Behavioral-Workbook.md           # STAR+Reflection fill-in for all 10 themes
 ```
+
+> **Scope note:** the technical case study is one half of the final loop; the **culture &
+> behavioral interview is the other half**. See `prep/` — especially the behavioral workbook,
+> which needs your real stories.
 
 Every slide carries a **full, word-for-word speaker script** in its notes (open the
 Notes pane or use Presenter View), including demo cues, backup-plan pointers, and slide

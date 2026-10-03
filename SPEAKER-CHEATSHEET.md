@@ -35,7 +35,7 @@ speaker notes in the .pptx — this is the one-page version for the day.
 | Strategy: break every link (the map) | 4 | 1 |
 | **DEMO 1:** install scripts — npm 11 runs it, npm 12 blocks it | 5–6 | 3 |
 | CI is the other door (script injection, pwn request) → CodeQL | 7 | 1 |
-| **DEMO 2:** issue title runs code, then the fix | 8 | 2.5 |
+| **Walk-through (not live):** issue title runs code, then the fix | 8 | 2 |
 | Prevention: safe-by-default CI | 9 | 1 |
 | Prevention: kill the token (OIDC, staged publish, revoke) | 10 | 1 |
 | Containment: Dependabot cooldown | 11 | 0.5 |
@@ -43,9 +43,10 @@ speaker notes in the .pptx — this is the one-page version for the day.
 
 **One-liner:** *"Make the attack expensive at every step."*
 
-**Demo commands:**
-- `cd demos\supply-chain\npm-install-scripts; .\run-demo.ps1` (run `-Prep` once on wifi first)
-- Demo 2: open an issue on `rod-trent/octo-notes-demo` with the payload title (see runbook)
+**One live demo** (slides 5–6): `cd demos\supply-chain\npm-install-scripts; .\run-demo.ps1`
+(run `-Prep` once on wifi first). Slide 8 is a **visual walk-through**, not performed.
+*Optional* live Actions injection is available if they ask — see runbook (enable the demo
+workflow first).
 
 ---
 

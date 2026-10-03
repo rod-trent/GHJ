@@ -50,7 +50,7 @@ The scary thing about these attacks is that they're self-replicating. They use t
 
 This talk is about how GitHub and npm are breaking that chain. And the key idea is there's no single silver bullet — it's about cutting every individual link in the attack, so the whole thing falls apart.
 
-I'll make it concrete with two live demos: first, npm literally blocking a malicious package from stealing credentials on install. And second, a CI pipeline getting hijacked by nothing more than an issue title — and then the one-line fix. Let's start with how the attack actually works."
+I'll make it concrete with a live demo — npm literally blocking a malicious package from stealing credentials on install — and then walk you through a second attack, a CI pipeline hijacked by nothing more than an issue title, and its one-line fix. Let's start with how the attack actually works."
 
 [Advance to slide 2.]`);
   }
@@ -172,7 +172,7 @@ On the 'steal credentials' link — this is where I'll spend the most time — i
 
 On the 'propagate' link: staged publishing with a 2FA gate, Dependabot cooldown, and instant credential revocation for incident response.
 
-No single one of these stops everything. Together, they make the attack expensive at every step. I'm going to demo two of these live — install scripts, and workflow injection — and summarize the rest. Let's do the biggest one first."
+No single one of these stops everything. Together, they make the attack expensive at every step. I'm going to demo the biggest one live — install scripts — then walk through workflow injection and summarize the rest. Let's start."
 
 [Advance to slide 5.]`);
   }
@@ -282,15 +282,15 @@ There are two classic ways in. On the left, script injection: an attacker-contro
 
 Here's the nice connection — and it ties directly to my CodeQL talk. We can DETECT both of these before they ship. CodeQL's 'code-injection' and 'untrusted-checkout' queries flag exactly these patterns, right in the pull request. So it's one toolchain across both surfaces: your application code and your CI.
 
-Let me show you the script-injection one live — because it's genuinely a little shocking how easy it is."
+Let me walk you through the script-injection one — because it's genuinely a little shocking how easy it is."
 
-[Advance to slide 8 — run Demo 2.]`);
+[Advance to slide 8 — walk-through (not a live run). The live version lives in the repo if asked.]`);
   }
 
   // ================= SLIDE 8 — DEMO 2 =================
   {
     const s = pres.addSlide({ masterName: "DARK" });
-    kicker(s, "Live demo 2 · hijack, then fix", HEX.green);
+    kicker(s, "Anatomy · a workflow hijack", HEX.redLt);
     title(s, "An issue title that runs code");
     card(s, M, 1.55, W - 2 * M, 1.5, "1A1012");
     s.addText("Attacker opens an issue titled:", { x: M + 0.25, y: 1.65, w: 10, h: 0.3, fontFace: "Calibri", fontSize: 11, color: HEX.muted, isTextBox: true });
@@ -309,19 +309,19 @@ Let me show you the script-injection one live — because it's genuinely a littl
     await iconChip(s, FA.FaShieldHalved, rx + 0.25, 4.9, 0.5, HEX.green);
     s.addText("Shell treats $TITLE as data, never code", { x: rx + 0.9, y: 4.88, w: 5, h: 0.6, fontFace: "Calibri", fontSize: 11.5, color: HEX.greenLt, bold: true, valign: "middle", isTextBox: true });
     s.addNotes(
-`[LIVE DEMO 2 — ~2.5 min]  >>> BROWSER: github.com/rod-trent/octo-notes-demo <<<
+`[ANATOMY WALK-THROUGH — ~2 min]  (explained on-slide, not run live — the single live demo was npm)
 
-"This repo has a workflow that greets people when they open an issue. Looks harmless. Watch what happens when the ISSUE TITLE itself is the attack.
+"Install scripts are the laptop door; this is the pipeline door — and it's shockingly simple. Picture a workflow that just greets people when they open an issue. Harmless, right? Watch what happens when the ISSUE TITLE itself is the attack.
 
-[Open a new issue with the payload title on the slide — or show it pre-opened.] The title isn't really a title; it's shell. It closes the echo string, then runs its own commands: print who I am, and dump a secret.
+Look at the payload at the top. That's a real issue title. It isn't really a title — it's shell. It closes the echo string, then runs its own commands: print who I am, and dump a secret.
 
-[Go to Actions → Issue triage → the run → expand the step.] And there it is in the log — 'PWNED as runner' — that's arbitrary code executing on the runner. And right below it, the base64 of DEPLOY_TOKEN — a fake secret, but it proves an attacker could exfiltrate a real one. All from typing an issue title. No code access, no login.
+Now the two versions. On the left, the vulnerable workflow: the expression — github.event.issue.title — gets substituted straight into the shell script BEFORE bash ever runs. So whatever the attacker types becomes code. When this runs, the Actions log literally prints 'PWNED as runner' and the base64 of a (fake) deploy secret — arbitrary execution and exfiltration, from typing an issue title. No code access, no login.
 
-Why did this happen? Look at the vulnerable version on the left. The expression — github.event.issue.title — gets substituted directly into the shell script BEFORE bash runs. So whatever the attacker types becomes code.
+The fix on the right is beautifully boring. Pass the title in as an environment VARIABLE, and reference it as a shell variable — dollar-TITLE. Now the shell treats it as inert data, never as code. Same output, zero injection.
 
-The fix, on the right, is beautifully boring. Pass the title in as an environment VARIABLE, and reference it as a shell variable — dollar-TITLE. Now the shell treats it as inert data, never as code. Same output, zero injection. I've actually opened that fix as a pull request on this repo, and CodeQL flagged the original as 'code-injection, critical' — prevention and detection, together."
+Two things to land: I actually shipped this fix as a merged pull request on the demo repo, and CodeQL flagged the original as 'code-injection, critical' and auto-closed the alert once it merged — prevention and detection, together. If anyone wants to see it fire for real, it's live in the repo and I'm happy to run it after."
 
-[BACKUP: demos/backup/actions-injection-run-log.txt. Advance to slide 9.]`);
+[The attack IS reproducible live — see RUNBOOK-SupplyChain (optional). Captured proof: demos/backup/actions-injection-run-log.txt. Advance to slide 9.]`);
   }
 
   // ================= SLIDE 9 — harden the pipeline =================
