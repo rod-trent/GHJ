@@ -14,3 +14,5 @@ demos/supply-chain/npm-install-scripts/**/vendor/*.tgz
 **/*.sarif
 **/codeql-pack.lock.yml
 **/.codeql/
+
+presentation/_packet.html
