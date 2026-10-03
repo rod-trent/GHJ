@@ -40,6 +40,7 @@ demos/
   RUNBOOK-CodeQL.md
   RUNBOOK-SupplyChain.md
 SPEAKER-CHEATSHEET.md     # one page: structure, timings, likely Q&A
+DRY-RUN-CHECKLIST.md      # day-of: pre-flight, per-demo rehearsal, teardown, panic card
 ```
 
 Every slide carries a **full, word-for-word speaker script** in its notes (open the
