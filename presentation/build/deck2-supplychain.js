@@ -180,7 +180,7 @@ No single one of these stops everything. Together, they make the attack expensiv
   // ================= SLIDE 5 — DEMO 1 setup =================
   {
     const s = pres.addSlide({ masterName: "CONTENT" });
-    kicker(s, "Live demo 1 · the biggest single change", HEX.green);
+    kicker(s, "Live demo · the biggest single change", HEX.green);
     title(s, "Install scripts: the attacker's favorite door");
     s.addText("A package's postinstall script runs automatically on npm install — with your shell, your environment, your tokens. It's the classic credential-theft vector.", { x: M, y: 1.35, w: W - 2 * M, h: 0.7, fontFace: "Calibri", fontSize: 16, color: HEX.sub, isTextBox: true });
     card(s, M, 2.3, W - 2 * M, 2.0, "1A1012");
@@ -198,7 +198,7 @@ No single one of these stops everything. Together, they make the attack expensiv
       x += cw + 0.3;
     }
     s.addNotes(
-`[DEMO 1 SETUP — ~60 sec]
+`[DEMO SETUP — ~60 sec]
 
 "Let's talk about the attacker's single favorite door: install scripts.
 
@@ -214,7 +214,7 @@ The three properties on the bottom are why attackers love it: it runs silently, 
   // ================= SLIDE 6 — DEMO 1 results =================
   {
     const s = pres.addSlide({ masterName: "DARK" });
-    kicker(s, "Live demo 1 · the fix", HEX.green);
+    kicker(s, "Live demo · the fix", HEX.green);
     title(s, "Same install. npm 12 shuts the door.");
     // Act 1
     card(s, M, 1.6, 5.95, 4.8, "1A1012");
@@ -232,7 +232,7 @@ The three properties on the bottom are why attackers love it: it runs silently, 
     await iconChip(s, FA.FaCircleCheck, rx + 0.25, 5.75, 0.5, HEX.green);
     s.addText("Script never ran. You decide, explicitly.", { x: rx + 0.9, y: 5.78, w: 5, h: 0.45, fontFace: "Calibri", fontSize: 12.5, color: HEX.greenLt, bold: true, valign: "middle", isTextBox: true });
     s.addNotes(
-`[LIVE DEMO 1 — ~3 min]  >>> SWITCH TO TERMINAL <<<
+`[LIVE DEMO — ~3 min]  >>> SWITCH TO TERMINAL <<<
 Command:  cd demos\\supply-chain\\npm-install-scripts ; .\\run-demo.ps1
 (Prereq: node -v must be >= 24.15. Run '.\\run-demo.ps1 -Prep' once on wifi beforehand.)
 
