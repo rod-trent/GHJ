@@ -1,0 +1,31 @@
+# =============================================================================
+# DEMO ONLY - INTENTIONALLY VULNERABLE. DO NOT COPY.
+# This workflow exists so the live "script injection" talk demo keeps working
+# after the real issue-triage.yml was fixed. It is script-injection vulnerable
+# on purpose: the attacker-controlled issue title is interpolated into run:.
+# Safety: only runs on the repo owner's own issues, uses a FAKE secret, and
+# is disabled by default (enable just before the demo, disable after).
+# The hardened version lives in issue-triage.yml. CodeQL flags THIS file.
+# =============================================================================
+name: Issue triage (DEMO - vulnerable)
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  triage:
+    # Demo safety guard: only the repo owner's issues trigger this job.
+    if: github.event.issue.user.login == github.repository_owner
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_TOKEN: ${{ secrets.DEMO_DEPLOY_TOKEN }}   # a FAKE secret for the demo
+    steps:
+      - name: Greet the issue author
+        run: |
+          echo "Thanks for opening: ${{ github.event.issue.title }}"
+          echo "A maintainer will take a look soon."
