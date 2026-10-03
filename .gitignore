@@ -16,3 +16,6 @@ demos/supply-chain/npm-install-scripts/**/vendor/*.tgz
 **/.codeql/
 
 presentation/_packet.html
+
+# Office lock files
+~$*
