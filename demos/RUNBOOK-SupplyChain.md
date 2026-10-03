@@ -40,9 +40,22 @@ trust. The attack never runs.
 
 ## Demo 2 — workflow injection on the live repo (needs network)
 
-Repo: `github.com/rod-trent/octo-notes-demo` (the `Issue triage` workflow is intentionally
-vulnerable; it's gated to only run on the **repo owner's** issues, and uses a **fake**
-secret `DEMO_DEPLOY_TOKEN`).
+Repo: `github.com/rod-trent/octo-notes-demo`.
+
+> **Which workflow:** the real `Issue triage` is now **fixed** (PR #2, merged). The live
+> attack runs against **`Issue triage (DEMO - vulnerable)`** (`issue-triage-demo.yml`) —
+> a clearly-labeled, owner-gated, fake-secret copy that exists only for this demo. It is
+> **DISABLED by default** so it can't fire by accident.
+
+**Step 0 — enable the demo workflow right before you present:**
+```bash
+gh workflow enable "Issue triage (DEMO - vulnerable)" -R rod-trent/octo-notes-demo
+```
+**And disable it again when you're done:**
+```bash
+gh workflow disable "Issue triage (DEMO - vulnerable)" -R rod-trent/octo-notes-demo
+```
+(Or toggle it in the repo UI: Actions → that workflow → ••• → Enable/Disable workflow.)
 
 1. Open a new issue with this title (the payload):
    ```
@@ -54,21 +67,22 @@ secret `DEMO_DEPLOY_TOKEN`).
      --title 'Login crash"; echo "PWNED as $(whoami)"; echo $DEPLOY_TOKEN | base64; #' \
      --body "demo"
    ```
-2. Actions → **Issue triage** → open the run → expand *Greet the issue author*.
-   The log literally prints `PWNED as runner …` and the base64 secret — proof of arbitrary
-   execution from untrusted input.
-3. Show the fix (branch `fix/issue-triage-injection`, already pushed): pass the title through
-   an **environment variable** so the shell treats it as data, drop the secret, and minimize
-   token permissions. Diff:
+2. Actions → **Issue triage (DEMO - vulnerable)** → open the run → expand *Greet the issue
+   author*. The log literally prints `PWNED as runner …` and the base64 secret — proof of
+   arbitrary execution from untrusted input.
+3. Show the fix — it's already **merged** as [PR #2](https://github.com/rod-trent/octo-notes-demo/pull/2).
+   Compare the two files side by side: `issue-triage-demo.yml` (vulnerable) vs the hardened
+   `issue-triage.yml` on `main`, which passes the title through an **environment variable** so
+   the shell treats it as data, drops the secret, and minimizes token permissions.
    ```bash
-   gh pr view -R rod-trent/octo-notes-demo fix/issue-triage-injection   # if you open a PR
-   # or
-   git -C demos/octo-notes-demo diff main fix/issue-triage-injection -- .github/workflows/issue-triage.yml
+   gh pr view 2 -R rod-trent/octo-notes-demo --web     # the merged fix + discussion
    ```
-4. CodeQL already flags this as `actions/code-injection/critical` in the Security tab —
-   the detection half of the story (ties to the CodeQL talk).
+4. CodeQL flags the demo file as `actions/code-injection/critical` in the Security tab, and the
+   merged fix **auto-closed** the alert on the real workflow — detection + fix, end to end
+   (ties to the CodeQL talk).
 
-> Close the demo issue afterwards: `gh issue close <n> -R rod-trent/octo-notes-demo`.
+> Afterwards: close the demo issue (`gh issue close <n> -R rod-trent/octo-notes-demo`) **and
+> disable the demo workflow** (Step 0 above).
 
 ## Talking points (map each to the kill chain)
 - **Compromise:** safer `actions/checkout` defaults (refuses untrusted fork code unless you
