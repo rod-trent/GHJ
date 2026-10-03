@@ -1,0 +1,19 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    # Don't adopt a brand-new release on day one. Malicious versions are
+    # usually detected and pulled within hours to days.
+    # (Security updates are NOT delayed by cooldown.)
+    cooldown:
+      default-days: 3
+      semver-major-days: 14
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 3

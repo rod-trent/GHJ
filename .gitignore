@@ -1,0 +1,16 @@
+# deck build deps / artifacts
+presentation/build/node_modules/
+presentation/build/qa1/
+presentation/build/qa2/
+presentation/build/*.pdf
+
+# node
+**/node_modules/
+**/package-lock.json
+demos/supply-chain/npm-install-scripts/**/vendor/*.tgz
+
+# codeql scratch
+**/codeql-db/
+**/*.sarif
+**/codeql-pack.lock.yml
+**/.codeql/

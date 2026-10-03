@@ -1,0 +1,28 @@
+# HARDENED version of pr-preview.yml
+# Untrusted PR code runs under `pull_request`: read-only token, no secrets.
+# Anything privileged (commenting, deploying) moves to a separate workflow
+# that never executes PR code.
+name: PR preview build
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+
+      - name: Build preview
+        run: |
+          npm ci --ignore-scripts
+          npm run build --if-present

@@ -1,0 +1,25 @@
+# INTENTIONALLY VULNERABLE: GitHub Actions script injection demo.
+# The issue title is attacker-controlled, and ${{ }} pastes it straight into
+# the shell script before bash ever runs.
+name: Issue triage
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  triage:
+    # Demo safety guard: only the repo owner's issues trigger this job.
+    if: github.event.issue.user.login == github.repository_owner
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_TOKEN: ${{ secrets.DEMO_DEPLOY_TOKEN }}   # a FAKE secret for the demo
+    steps:
+      - name: Greet the issue author
+        run: |
+          echo "Thanks for opening: ${{ github.event.issue.title }}"
+          echo "A maintainer will take a look soon."

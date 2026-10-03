@@ -1,0 +1,9 @@
+name: "Octo Notes CodeQL config"
+
+# GitHub's broader security suite. Model packs in .github/codeql/extensions
+# (our node:sqlite models) are picked up automatically by code scanning.
+queries:
+  - uses: security-extended
+
+paths-ignore:
+  - node_modules

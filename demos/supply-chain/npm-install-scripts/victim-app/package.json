@@ -1,0 +1,8 @@
+{
+  "name": "victim-app",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "color-utilz": "file:vendor/color-utilz-4.2.1.tgz"
+  }
+}

@@ -1,0 +1,26 @@
+# HARDENED version of issue-triage.yml
+#  1. Untrusted input goes through an environment variable, never ${{ }} in run:
+#     (the shell treats $TITLE as data, not code).
+#  2. Least-privilege GITHUB_TOKEN.
+#  3. No secrets in a job that touches untrusted input.
+#  4. Third-party actions pinned to a full commit SHA (none needed here).
+name: Issue triage
+
+on:
+  issues:
+    types: [opened]
+
+permissions: {}
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Greet the issue author
+        env:
+          TITLE: ${{ github.event.issue.title }}
+        run: |
+          echo "Thanks for opening: $TITLE"
+          echo "A maintainer will take a look soon."

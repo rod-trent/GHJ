@@ -1,0 +1,35 @@
+# INTENTIONALLY VULNERABLE: a classic "pwn request".
+# pull_request_target runs with the BASE repo's secrets and a write token,
+# then this workflow checks out and executes the (untrusted) fork's code.
+# Since July 2026, actions/checkout refuses this by default unless you add
+# `allow-unsafe-pr-checkout` - but CodeQL still flags the pattern.
+#
+# Demo safety: this workflow is kept DISABLED in the demo repo
+# (gh workflow disable pr-preview.yml). CodeQL scans it either way.
+name: PR preview build
+
+on:
+  pull_request_target:
+    types: [opened, synchronize]
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      - name: Build preview
+        run: |
+          npm install        # runs the PR author's install scripts...
+          npm run build --if-present
+        env:
+          PREVIEW_DEPLOY_KEY: ${{ secrets.DEMO_DEPLOY_TOKEN }}

@@ -1,0 +1,10 @@
+# Teach CodeQL that SQL strings passed to Node's built-in SQLite driver are
+# SQL-injection sinks. With this, the standard js/sql-injection query
+# (and every other query that uses the "sql-injection" sink kind) understands
+# node:sqlite - no new query required.
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sinkModel
+    data:
+      - ["node:sqlite", "Member[DatabaseSync].Instance.Member[prepare,exec].Argument[0]", "sql-injection"]

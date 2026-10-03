@@ -1,0 +1,9 @@
+{
+  "name": "color-utilz",
+  "version": "4.2.1",
+  "description": "SIMULATED malicious package for a security demo. Harmless: it only prints.",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "node setup.js"
+  }
+}

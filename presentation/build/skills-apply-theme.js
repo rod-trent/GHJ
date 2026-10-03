@@ -1,0 +1,1 @@
+module.exports = require("C:/Users/rotrent/AppData/Roaming/Claude/local-agent-mode-sessions/skills-plugin/1dc049d1-ef23-40ad-b725-c5d9dc1eaf65/b7c2f2ba-1a0e-4e9c-8e5a-017e8a1739f0/skills/pptx/scripts/apply_theme.js");
