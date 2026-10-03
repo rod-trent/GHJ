@@ -13,7 +13,8 @@ SECTIONS = [
     ("prep/05-Behavioral-Drafts-T1-T4-T8.md", "Behavioral drafts — Themes 1, 4, 8", "Part B — Behavioral"),
     ("prep/06-Behavioral-Drafts-T2-T9.md",    "Behavioral drafts — Themes 2, 9", None),
     ("prep/07-Behavioral-Draft-T6.md",        "Behavioral draft — Theme 6",     None),
-    ("prep/04-Behavioral-Workbook.md",        "Behavioral workbook (remaining themes)", None),
+    ("prep/08-Behavioral-Drafts-T3-T5-T7-T10.md", "Behavioral drafts — Themes 3, 5, 7, 10", None),
+    ("prep/04-Behavioral-Workbook.md",        "Behavioral workbook (all themes reference)", None),
     ("prep/01-Security-Lab-Research-Brief.md","GitHub Security Lab — research brief", "Part C — Research & questions"),
     ("prep/02-Candidate-Questions.md",        "Questions to ask them",          None),
 ]
