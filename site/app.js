@@ -401,7 +401,7 @@ jobs:
     try {
       const api = `https://api.github.com/repos/${REPO}/actions/workflows/${DEMO_WF}`;
       const [wf, runs] = await Promise.all([
-        fetch(api, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : Promise.reject(r.status))),
+        fetch(api, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : Promise.reject(r))),
         fetch(`${api}/runs?per_page=1`, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : { workflow_runs: [] })),
       ]);
       const on = wf.state === 'active';
@@ -416,7 +416,11 @@ jobs:
       }
       text.textContent = (on ? 'Demo workflow ENABLED: armed' : 'Demo workflow disabled (safe)') + runTxt;
     } catch (e) {
-      text.textContent = 'Status unavailable (offline or rate-limited)';
+      const limited = e instanceof Response && (e.status === 403 || e.status === 429) && e.headers.get('x-ratelimit-remaining') === '0';
+      const reset = limited && Number(e.headers.get('x-ratelimit-reset'));
+      text.textContent = limited
+        ? `Status unavailable: GitHub's anonymous rate limit is used up on this network (resets ${new Date(reset * 1000).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}). Check with gh below.`
+        : 'Status unavailable (offline?). Check with gh below.';
     }
   }
   $('#wfRefresh').addEventListener('click', refreshStatus);

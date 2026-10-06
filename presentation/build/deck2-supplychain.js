@@ -42,15 +42,11 @@ const FA = require("react-icons/fa6");
     s.addText([{ text: "Technical case study", options: { color: HEX.sub } }, { text: "   ·   ", options: { color: HEX.muted } }, { text: "Rod Trent", options: { color: HEX.sub } }, { text: "   ·   ", options: { color: HEX.muted } }, { text: "GitHub Security Lab", options: { color: HEX.sub } }],
       { x: M, y: 5.5, w: 11, h: 0.4, fontFace: "Calibri", fontSize: 14, isTextBox: true });
     s.addNotes(
-`[TITLE — ~45 sec]
+`[TITLE — ~25 sec]
 
-"Thanks for having me. Picture this: a single open-source maintainer gets phished on a Tuesday. By Wednesday, malware is riding inside hundreds of packages that millions of projects depend on. That's not hypothetical — that's the pattern we saw repeatedly over the past year, with worms like Shai-Hulud and the tj-actions compromise.
+"Thanks for having me. One maintainer gets phished on a Tuesday. By Wednesday, malware is riding inside hundreds of packages. We saw that pattern again and again with Shai-Hulud and the tj-actions compromise, because these attacks spread on the ecosystem's own trust.
 
-The scary thing about these attacks is that they're self-replicating. They use the ecosystem's OWN trust to spread — the same automation and tokens that make open source fast are what the malware hijacks.
-
-This talk is about how GitHub and npm are breaking that chain. And the key idea is there's no single silver bullet — it's about cutting every individual link in the attack, so the whole thing falls apart.
-
-I'll make it concrete with a live demo — npm literally blocking a malicious package from stealing credentials on install — and then walk you through a second attack, a CI pipeline hijacked by nothing more than an issue title, and its one-line fix. Let's start with how the attack actually works."
+There's no silver bullet. The defense is to cut every link in the chain. I'll show npm blocking a malicious install live, then walk through a CI pipeline hijacked by nothing more than an issue title."
 
 [Advance to slide 2.]`);
   }
@@ -80,21 +76,11 @@ I'll make it concrete with a live demo — npm literally blocking a malicious pa
     s.addText([{ text: "The loop is the danger: ", options: { bold: true, color: HEX.redLt } }, { text: "stage 3 feeds stage 1 again. That's how a worm like 2025's Shai-Hulud hit hundreds of packages.", options: { color: HEX.sub } }],
       { x: M, y: 5.8, w: W - 2 * M, h: 0.5, fontFace: "Calibri", fontSize: 14, align: "center", isTextBox: true });
     s.addNotes(
-`[THE PROBLEM — ~90 sec]
+`[THE PROBLEM — ~55 sec]
 
-"Here's the anatomy of a modern supply-chain attack. It's three stages, and the dangerous part is that it's a loop.
+"Three stages, and it's a loop. Compromise: phish a maintainer or abuse a CI misconfiguration, and now the attacker publishes as someone you trust. Steal credentials: a postinstall script or a hijacked workflow harvests npm tokens, cloud keys, and the GitHub token in CI. Propagate: use those tokens to push the same payload into every package that maintainer can publish.
 
-Stage one, compromise. The attacker gets a foothold — usually by phishing a maintainer, or by abusing a misconfigured CI pipeline. Now they can publish code as someone you trust.
-
-Stage two, steal credentials. The malicious code — maybe a postinstall script, maybe a hijacked workflow — harvests secrets: npm publish tokens, cloud keys, the GitHub token sitting in CI.
-
-Stage three, propagate. And this is the kicker — they use those stolen tokens to inject the exact same payload into EVERY other package that maintainer can publish.
-
-Now follow the arrow back. Stage three feeds stage one all over again, on a whole new set of victims. That's a worm. That's how one phished developer becomes malware in hundreds of packages within hours — because each infection automatically creates the next.
-
-[Point at the callout.] That self-replication is the problem. You can't just clean up one package; by the time you notice, it's spread. So the strategy — and this is the roadmap for the whole talk — is to attack the LOOP. Break any link, and the chain reaction stops. The rest of the talk is: here's a defense for each link.
-
-But first — why should you, personally, care?"
+Follow the arrow back. Stage three feeds stage one on a fresh set of victims. That's a worm, and it's why cleaning up one package isn't enough. Break any link and the chain reaction stops. The rest of this talk is a defense for each link."
 
 [Advance to slide 3.]`);
   }
@@ -128,15 +114,9 @@ But first — why should you, personally, care?"
       wx += ww + 0.3;
     }
     s.addNotes(
-`[WHY IT MATTERS — ~60 sec]
+`[WHY IT MATTERS — ~30 sec]
 
-"Here's why this is everyone's problem, not just big maintainers'. You run far more code than you read.
-
-Look at the numbers. A typical application pulls in thousands of transitive dependencies — code written by strangers you'll never meet. Once a compromise starts, it spreads ecosystem-wide in hours, not weeks. And the number of lines of all that dependency code most teams actually review? Zero.
-
-So we extend an enormous amount of trust without ever noticing. Three moments, on the bottom. Every install — npm install runs third-party code on your machine, with your permissions and your environment variables. Every CI run — your pipeline holds the real keys: publish tokens, cloud creds, a writable GitHub token. Every release — a compromised publish flows straight to everyone downstream, automatically. And everyone downstream inherits the risk of every dependency you ever added.
-
-That's the exposure. The good news is that each of those moments is now a place we can put up a defense — which is exactly what GitHub and npm did. Here's the strategy."
+"You run far more code than you read: thousands of transitive dependencies, spread measured in hours, and close to zero lines actually reviewed. Every install runs a stranger's code with your permissions. Every CI run holds the real keys. Every release flows downstream automatically. Each of those moments is now a place to put a defense."
 
 [Advance to slide 4.]`);
   }
@@ -162,18 +142,17 @@ That's the exposure. The good news is that each of those moments is now a place 
       y += 1.4;
     }
     s.addNotes(
-`[THE STRATEGY — ~60 sec]
+`[THE STRATEGY — ~45 sec]
 
-"So here's the map for the rest of the talk. It's the same kill chain from a minute ago — compromise, steal credentials, propagate — but now with the 2026 defenses laid on top of each link.
+"Here's the map: the same kill chain, with the 2026 defenses on each link.
 
-On the 'compromise' link: npm now puts high-impact accounts into a 72-hour read-only mode after a suspicious email change or 2FA recovery, safer checkout defaults, and policies for who can trigger workflows.
+Compromise: npm's 72-hour read-only mode after an email change or 2FA recovery, safer checkout defaults, and workflow trigger policies.
+Steal credentials: install scripts off by default in npm 12, trusted publishing with OIDC so there's no long-lived token, and an Actions network firewall.
+Propagate: staged publishing behind 2FA, Dependabot cooldown, and instant credential revocation.
 
-On the 'steal credentials' link — this is where I'll spend the most time — install scripts are off by default in npm 12, trusted publishing with OIDC removes the long-lived token entirely, and there's a network firewall for Actions.
+None of these stops everything alone. Together they make the attack expensive at every step. Let's see the biggest one."
 
-On the 'propagate' link: staged publishing with a 2FA gate, Dependabot cooldown, and instant credential revocation for incident response.
-
-No single one of these stops everything. Together, they make the attack expensive at every step. I'm going to demo the biggest one live — install scripts — then walk through workflow injection and summarize the rest. Let's start."
-
+[CLOCK CHECK: you should be under 3:00 here. Slide 5 is a quick setup. The npm 11 vs npm 12 contrast on slide 6 is the moment to protect.]
 [Advance to slide 5.]`);
   }
 
@@ -284,7 +263,7 @@ Here's the nice connection — and it ties directly to my CodeQL talk. We can DE
 
 Let me walk you through the script-injection one — because it's genuinely a little shocking how easy it is."
 
-[Advance to slide 8 — walk-through (not a live run). The live version lives in the repo if asked.]`);
+[Advance to slide 8, then switch to the launchpad: Talk 2 tab, card 3 (vulnerable vs hardened diff).]`);
   }
 
   // ================= SLIDE 8 — DEMO 2 =================
@@ -309,19 +288,21 @@ Let me walk you through the script-injection one — because it's genuinely a li
     await iconChip(s, FA.FaShieldHalved, rx + 0.25, 4.9, 0.5, HEX.green);
     s.addText("Shell treats $TITLE as data, never code", { x: rx + 0.9, y: 4.88, w: 5, h: 0.6, fontFace: "Calibri", fontSize: 11.5, color: HEX.greenLt, bold: true, valign: "middle", isTextBox: true });
     s.addNotes(
-`[ANATOMY WALK-THROUGH — ~2 min]  (explained on-slide, not run live — the single live demo was npm)
+`[ANATOMY WALK-THROUGH — ~90 sec]  NARRATE FROM THE LAUNCHPAD, not the slide
+Launchpad: Talk 2 tab -> card 3, "Slide 8 walk-through": vulnerable vs hardened, side by side, with the risky lines highlighted.
 
-"Install scripts are the laptop door; this is the pipeline door — and it's shockingly simple. Picture a workflow that just greets people when they open an issue. Harmless, right? Watch what happens when the ISSUE TITLE itself is the attack.
+"Install scripts are the laptop door. This is the pipeline door, and it's shockingly simple. Picture a workflow that just greets people who open an issue. The attack is the issue title itself.
 
-Look at the payload at the top. That's a real issue title. It isn't really a title — it's shell. It closes the echo string, then runs its own commands: print who I am, and dump a secret.
+The payload isn't really a title. It's shell: it closes the echo string, then runs its own commands to print who it's running as and dump a secret.
 
-Now the two versions. On the left, the vulnerable workflow: the expression — github.event.issue.title — gets substituted straight into the shell script BEFORE bash ever runs. So whatever the attacker types becomes code. When this runs, the Actions log literally prints 'PWNED as runner' and the base64 of a (fake) deploy secret — arbitrary execution and exfiltration, from typing an issue title. No code access, no login.
+On the left, the vulnerable workflow. The issue-title expression is substituted into the script before bash ever runs, so whatever the attacker types becomes code. [Point at the red line.] And look at what's in scope: a secret and a write token.
 
-The fix on the right is beautifully boring. Pass the title in as an environment VARIABLE, and reference it as a shell variable — dollar-TITLE. Now the shell treats it as inert data, never as code. Same output, zero injection.
+On the right, the fix, and it's beautifully boring. Pass the title in as an environment variable and reference it as a shell variable, dollar-TITLE. Now the shell treats it as data, never code. Plus a deny-all default token, and no secrets in that job.
 
-Two things to land: I actually shipped this fix as a merged pull request on the demo repo, and CodeQL flagged the original as 'code-injection, critical' and auto-closed the alert once it merged — prevention and detection, together. If anyone wants to see it fire for real, it's live in the repo and I'm happy to run it after."
+I shipped this fix as a merged pull request on the demo repo, and CodeQL's code-injection alert closed automatically when it merged. Detection and prevention in one loop."
 
-[The attack IS reproducible live — see RUNBOOK-SupplyChain (optional). Captured proof: demos/backup/actions-injection-run-log.txt. Advance to slide 9.]`);
+[LIVE RUN: OPTIONAL. Fire the issue ONLY IF (1) the launchpad status reads "ENABLED: armed" AND (2) you've practiced the teardown today. Otherwise, if asked to see it run: launchpad, Talk 2, card 4, "Actions injection log" replay. Teardown commands: card 5.]
+[Advance to slide 9.]`);
   }
 
   // ================= SLIDE 9 — harden the pipeline =================

@@ -115,7 +115,8 @@
           <span class="dot"></span><span class="status-text">Checking demo workflow…</span>
           <button class="mini" id="wfRefresh" aria-label="Refresh status">↻</button>
         </div>
-        <p class="hint">GitHub's public API can lag up to a minute after <code>enable</code>/<code>disable</code>. Trust the terminal, and hit ↻ to re-check.</p>
+        <p class="hint">GitHub's public API can lag up to a minute after <code>enable</code>/<code>disable</code>, and shared networks can exhaust its 60-calls/hour anonymous limit. The terminal is the source of truth:</p>
+        <div class="cmd" data-copy><code>gh workflow list -R rod-trent/octo-notes-demo --all</code></div>
         <ol class="steps">
           <li>
             <span>Enable the demo workflow</span>

@@ -5,37 +5,39 @@ speaker notes in the .pptx — this is the one-page version for the day.
 
 ---
 
-## Talk 1 — CodeQL (12 slides, ~12 min + Q&A)
+## Talk 1 — CodeQL (12 slides, ~11 min scripted + interruptions)
 
 | Beat | Slides | ~min |
 |---|---|---|
-| Problem: grep can't follow data flow; one bug class, many faces | 1–2 | 2 |
-| Why it matters: scale + leverage (one query protects everyone) | 3 | 1 |
-| Solution: code as data → QL query → results | 4 | 1.5 |
-| Demo app "Octo Notes" + its deliberate blind spot | 5 | 1 |
+| Title + problem: grep can't follow data flow; one bug class, many faces | 1–2 | 1.5 |
+| Why it matters: one query protects everyone | 3 | 0.5 |
+| Solution: code as data → QL query → results | 4 | 0.75 |
+| Demo app "Octo Notes" + its deliberate blind spot | 5 | 0.5 |
+| **⏱ Checkpoint: start slide 6 by ~4:00.** Past ~4:30 → you'll skip slide 10 | | |
 | **DEMO Act 1:** default suite misses the SQLi | 6 | 1.5 |
-| Models-as-data: one line of YAML | 7 | 1 |
-| **DEMO Acts 2–3:** SQLi found + the QL query | 8 | 2 |
-| Bridge: CodeQL also scans Actions (→ talk 2) | 9 | 1 |
-| In the PR + Copilot Autofix | 10 | 1 |
-| Impact + takeaways | 11–12 | 1.5 |
+| Models-as-data: one line of YAML | 7 | 1.5 |
+| **DEMO Acts 2–3:** SQLi found + the QL query | 8 | 1.5 |
+| Bridge: CodeQL also scans Actions (→ talk 2) | 9 | 1.5 |
+| *Optional:* in the PR (skip if behind; don't sell Autofix) | 10 | 0.75 |
+| Impact + takeaways | 11–12 | 2 |
 
 **One-liner:** *"Describe the bug once, catch it everywhere."*
 
-**Demo command:** `cd demos\codeql; .\run-codeql-demo.ps1`
+**Demo command (DB pre-built):** `cd demos\codeql; .\run-codeql-demo.ps1 -SkipBuild`
 
 ---
 
-## Talk 2 — Supply chain (13 slides, ~13 min + Q&A)
+## Talk 2 — Supply chain (13 slides, ~13 min scripted + interruptions)
 
 | Beat | Slides | ~min |
 |---|---|---|
-| Problem: self-replicating attacks — compromise → steal → propagate | 1–2 | 2 |
-| Why it matters: you run far more code than you read | 3 | 1 |
-| Strategy: break every link (the map) | 4 | 1 |
-| **DEMO 1:** install scripts — npm 11 runs it, npm 12 blocks it | 5–6 | 3 |
+| Title + problem: self-replicating attacks — compromise → steal → propagate | 1–2 | 1.25 |
+| Why it matters: you run far more code than you read | 3 | 0.5 |
+| Strategy: break every link (the map) | 4 | 0.75 |
+| **⏱ Checkpoint: slides 1–4 done by ~3:00** | | |
+| **DEMO:** install scripts — npm 11 runs it, npm 12 blocks it (protect this) | 5–6 | 3 |
 | CI is the other door (script injection, pwn request) → CodeQL | 7 | 1 |
-| **Walk-through (not live):** issue title runs code, then the fix | 8 | 2 |
+| **Walk-through from the launchpad diff** (Talk 2 → card 3); live run only if armed + teardown rehearsed | 8 | 1.5 |
 | Prevention: safe-by-default CI | 9 | 1 |
 | Prevention: kill the token (OIDC, staged publish, revoke) | 10 | 1 |
 | Containment: Dependabot cooldown | 11 | 0.5 |

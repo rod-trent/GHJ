@@ -105,7 +105,10 @@ slide. The live attack below is now **OPTIONAL** (only if they ask to see it fir
 - [ ] Problem first — don't jump to features.
 - [ ] Narrate every demo step: what you're doing, why, what to watch for.
 - [ ] If a live demo misbehaves: **switch to the backup file, keep talking, move on** — don't debug on stage.
-- [ ] Watch the clock in Presenter View; ~1.5–2 min/slide.
+- [ ] Watch the clock in Presenter View. **Checkpoints:** CodeQL, start slide 6 by ~4:00 (past ~4:30 → skip
+  slide 10). Supply chain, done with slides 1–4 by ~3:00.
+- [ ] Supply chain slide 8: narrate from the **launchpad diff** (Talk 2 → card 3). Fire the live issue **only** if
+  the launchpad (or `gh workflow list`) shows the demo workflow enabled **and** you've rehearsed teardown that day.
 - [ ] Mention the cross-link once per talk (CodeQL ↔ supply chain = detection + prevention).
 
 ---

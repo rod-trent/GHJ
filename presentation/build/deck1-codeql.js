@@ -87,15 +87,11 @@ const FA = require("react-icons/fa6");
       { x: M, y: 5.5, w: 11, h: 0.4, fontFace: "Calibri", fontSize: 14, isTextBox: true }
     );
     s.addNotes(
-`[TITLE — ~45 sec]
+`[TITLE — ~30 sec]
 
-"Thanks for having me. I could spend the next fifteen minutes walking through CodeQL's feature list — but that's not the interesting part, and it's not what makes it powerful.
+"Thanks for having me. Rather than tour CodeQL's features, I want to show you one shift: turning 'is my code vulnerable?' from a judgment call into a question a computer answers precisely, across millions of lines.
 
-So instead I want to show you a shift in how we think about finding bugs. The question 'is my code vulnerable?' is usually a judgment call — a human squinting at a diff. What CodeQL does is turn that into a question a computer can answer precisely, and repeatably, across millions of lines.
-
-Here's the plan: I've got one small running app, and I'm going to scan it live three times. The first scan will find some bugs — and quietly MISS one. Then, with a single line of YAML, I'll make it find the whole class of bug it missed. And finally I'll show you the actual query doing the work.
-
-The theme for the whole talk is right there on the slide: find the bug CLASS, not just the bug. Let's start with why that distinction matters."
+The plan: one small app, scanned live three times. The first scan finds some bugs and quietly misses one. One line of YAML makes it find the whole class it missed. Then I'll show you the query doing the work. Find the bug class, not just the bug."
 
 [Advance to slide 2.]`
     );
@@ -143,19 +139,13 @@ The theme for the whole talk is right there on the slide: find the bug CLASS, no
       yy += 1.35;
     }
     s.addNotes(
-`[THE PROBLEM — ~90 sec]
+`[THE PROBLEM — ~60 sec]
 
-"Here's the core problem. The same vulnerability wears a hundred different disguises.
+"The same vulnerability wears a hundred disguises. Every snippet on the left is SQL injection: string concatenation, a template literal, a helper function, input laundered through three calls. A reviewer or a grep rule catches one or two of them. The indirect ones are the ones that ship.
 
-Look at the left-hand panel. Every one of those four snippets is the exact same bug — SQL injection — but they look nothing alike. The first builds a query with string concatenation. The second uses a template literal. The third hides it behind a helper function. The fourth launders the input through three functions before it ever reaches the database.
+That's the point on the right. This isn't a text problem, it's a data-flow problem: untrusted input travels through the program and reaches a dangerous operation, a sink. Grep sees one line at a time. It can't follow a value across functions and files.
 
-Now imagine you're the reviewer. Or imagine you wrote a grep rule to catch SQL injection. You'd catch maybe one or two of these. The indirect ones — the ones that go through a helper, or get reassigned to another variable — those are exactly the ones that slip through and ship to production.
-
-And that's the insight on the right. This isn't really a text problem; it's a DATA-FLOW problem. The actual shape of the vulnerability is: untrusted input — from a request — travels through the program and reaches a dangerous operation, a 'sink'. Grep can't see that. Grep sees strings on a single line. It cannot follow a value as it moves across functions and files.
-
-And the cost of missing it isn't symmetric. A bug caught in review costs you a few minutes. The same bug in production costs you an incident — a 2 a.m. page, a disclosure, a scramble.
-
-So hold that mental model — untrusted input reaching a sink — because in about five minutes you'll watch CodeQL find exactly this, including a variant the default scanner misses."
+Hold that model, untrusted input reaching a sink. In a few minutes you'll watch CodeQL find exactly that, including a variant the default scanner misses."
 
 [Advance to slide 3.]`);
   }
@@ -195,21 +185,13 @@ So hold that mental model — untrusted input reaching a sink — because in abo
       wx += ww + 0.3;
     }
     s.addNotes(
-`[WHY IT MATTERS — ~60 sec]
+`[WHY IT MATTERS — ~35 sec]
 
-"So why does this matter beyond one app? Scale, and leverage.
+"Why it matters: scale and leverage. Over a hundred million developers ship code that almost nobody re-reads, and a bug costs minutes in review but an incident in production.
 
-GitHub has over a hundred million developers shipping code every single day, and almost none of it gets a second careful read. The economics are brutal and asymmetric — look at the middle number: it takes minutes to review a fix, but an incident to clean one up after it ships.
+The hopeful number is the third one. One good query protects every repo that uses that pattern. That's the Security Lab's model in a sentence: encode an expert's insight once, and it runs everywhere."
 
-But here's the hopeful part, the third number: one good query can protect every repository that uses a given pattern or library. You write the insight down once, and it runs everywhere, forever.
-
-That's actually the whole model of the Security Lab — take a security researcher's expertise and encode it so it scales to the entire ecosystem, instead of living in one expert's head.
-
-And it lands differently for each audience. Developers get bugs caught in the pull request instead of a ticket months later. Security teams get to scale themselves — one query instead of one review at a time. Organizations get measurable, auditable coverage across thousands of repos. And the open-source ecosystem gets safer, because when an upstream library is modeled once, everyone downstream benefits.
-
-Okay — so how does it actually work?"
-
-[Advance to slide 4.]`);
+[If they're nodding, skip the audience row entirely. Advance to slide 4.]`);
   }
 
   // ================= SLIDE 4 — The idea: code as data =================
@@ -245,19 +227,13 @@ Okay — so how does it actually work?"
       { x: M, y: 5.25, w: W - 2 * M, h: 0.5, fontFace: "Calibri", fontSize: 15, align: "center", isTextBox: true }
     );
     s.addNotes(
-`[THE SOLUTION — ~75 sec]
+`[THE SOLUTION — ~50 sec]
 
-"If you take one idea away from this talk, it's this: CodeQL treats your code as DATA you can query.
+"The one idea to take away: CodeQL treats your code as data you can query.
 
-Walk across the pipeline. On the left, your source code. CodeQL runs an extractor over it and builds a relational database — and this is the key — it's not just the text. It captures the structure: every function call, every variable, the call graph, and crucially how data flows between all of them.
+Left to right. An extractor turns your source into a relational database. Not the text, the structure: every call, every variable, the call graph, and how data flows between them. Then you ask a question in QL. Here: 'does untrusted input reach a SQL sink?' You describe the shape of the bug, and the engine finds every place that shape occurs.
 
-Once your code is a database, you can ask questions in QL — that's the query language, purpose-built for this. And the question we care about is literally: 'does untrusted input ever reach a SQL sink?' You describe the SHAPE of the bug, and the engine finds every place that shape occurs.
-
-On the right, you get results — and not just a line number. You get the full data-flow path: here's where the tainted data entered, here's every hop it took, here's the dangerous call it reached. That's what makes the finding trustworthy and fixable.
-
-And this is exactly why it generalizes to a bug CLASS instead of a single bug. You're not searching for a string; you're querying behavior. Write the query once, and it catches the version you thought of and the four versions you didn't.
-
-Enough theory — let me show you on a real app."
+The result isn't just a line number. It's the full path: where the tainted data entered, every hop, and the dangerous call it reached. That's why it catches a class, not a string. Let me show you."
 
 [Advance to slide 5.]`);
   }
@@ -299,15 +275,14 @@ Enough theory — let me show you on a real app."
       yy += 1.4;
     }
     s.addNotes(
-`[THE DEMO APP — ~60 sec]
+`[THE DEMO APP — ~40 sec]
 
-"Meet the victim. It's called Octo Notes — a tiny notes API, about sixty lines, built with Express and Node's built-in SQLite driver. Small enough to hold in your head, but it has real, representative bugs.
+"Octo Notes: a sixty-line notes API on Express and Node's built-in SQLite. Search and by-owner both build SQL by gluing strings together: the same bug in two shapes. Get-by-id is parameterized, the safe pattern. Watch CodeQL stay silent on that one. No false positive.
 
-Look at the endpoints on the left. The search endpoint and the by-owner endpoint both build SQL by gluing strings together — those are our two injection bugs, and notice they're written differently, same bug, two faces. Then there's the get-by-id endpoint — that one is SAFE. It uses a parameterized query, which is the pattern we actually want. I'm calling that out now because in a minute I want you to watch CodeQL flag the two bad ones and stay completely silent on the safe one. No false positive — that precision is what keeps developers trusting the tool.
+It also has a deliberate blind spot. The default scanner is going to miss the SQL injection, and that miss is the whole story."
 
-Why this app specifically? Three reasons, on the right. It covers four bug classes in sixty lines. It has zero native dependencies — node:sqlite is built into Node, nothing to compile or install, so the demo always runs. And — this is the fun part — it has a deliberate blind spot. The default scanner is going to MISS the SQL injection. That miss is the whole story. Let's go see it."
-
-[Advance to slide 6 — then run the demo.]`);
+[CLOCK CHECK: you should be under 4:00 here. If you start slide 6 past ~4:30, you're behind: plan to SKIP slide 10.]
+[Advance to slide 6, then switch to the terminal.]`);
   }
 
   // ================= SLIDE 6 — DEMO Act 1 =================
@@ -340,25 +315,22 @@ Why this app specifically? Three reasons, on the right. It covers four bug class
     }
     s.addNotes(
 `[LIVE DEMO — ACT 1 — ~90 sec]  >>> SWITCH TO TERMINAL <<<
-Command:  cd demos\\codeql ; .\\run-codeql-demo.ps1   (Act 1)
+[CLOCK: past ~4:30 at this point? Then skip slide 10 later (go 9 -> 11).]
+Command:  cd demos\\codeql ; .\\run-codeql-demo.ps1 -SkipBuild   (database is pre-built; Act 1 takes ~30 sec)
 
-"Two commands. First, 'database create' — this is the extraction step we just talked about; it compiles Octo Notes into that queryable database. Then 'database analyze' with GitHub's standard security-extended suite — the same queries that run by default in code scanning.
+"The database is already built. That's the extraction step we just talked about, and it takes about a minute, so I ran it before we started. Now I'm running 'database analyze' with GitHub's security-extended suite, the same queries code scanning runs by default.
 
-[Let it run. Then walk the results on the slide.]
+[While it runs, ~30 sec:] Remember the endpoints: two injectable, one safe, plus a file read and an HTML echo.
 
-And here's the result. It found the reflected XSS in preview.js. It found the path traversal in attachments.js. Two real, serious bugs, straight out of the box — great.
+[Results.] It found the reflected XSS in preview.js and the path traversal in attachments.js. Two real bugs, out of the box.
 
-But look at the bottom row. The SQL injection? MISSED. Both variants. Nothing.
+But the SQL injection? Missed. Both variants. So, a question for you: why would a tool built to find SQL injection, running its SQL-injection query, come up empty here?
 
-So let me ask the room — why? This is a tool built to find SQL injection, running its SQL-injection query, over code that obviously has SQL injection. Why does it come up empty?
+[Pause. Let them answer.]
 
-[Pause — let them think.]
+It's not a CodeQL bug. CodeQL doesn't yet know this library. node:sqlite is new, and the engine doesn't know that .prepare() and .exec() are where SQL executes, the 'sink.' It sees the user input. It just can't see the finish line. That's not a dead end; it's the most interesting moment in the talk."
 
-It's not a bug in CodeQL. It's that CodeQL doesn't yet KNOW this particular library. node:sqlite is relatively new, and the engine doesn't know that its .prepare() and .exec() methods are places where SQL gets executed — what we call a 'sink'. The query is fine. The source — the user input — is recognized. But the engine doesn't see the finish line, so it can't connect the dots.
-
-That's not a dead end. That's the most interesting moment in the talk."
-
-[BACKUP if the CLI misbehaves: open demos/backup/codeql-1-default-suite.csv. Advance to slide 7.]`);
+[BACKUP if the CLI stalls: launchpad, Talk 1, card 4 replay (or demos/backup/codeql-1-default-suite.csv). Advance to slide 7.]`);
   }
 
   // ================= SLIDE 7 — models as data =================
@@ -501,7 +473,7 @@ And this is real, not theoretical — the demo repo you can go look at right now
 
 I'm flagging this deliberately, because it's the bridge to my other talk on supply-chain attacks. Same toolchain, two surfaces — your code and your pipelines — one PR experience. That's defense in depth from a single scan."
 
-[Advance to slide 10.]`);
+[Advance to slide 10, or if you were behind at slide 6, skip straight to slide 11.]`);
   }
 
   // ================= SLIDE 10 — in the workflow =================
@@ -512,7 +484,7 @@ I'm flagging this deliberately, because it's the bridge to my other talk on supp
     const flow = [
       [FA.FaCodePullRequest, "Open a PR", "CodeQL runs as a check on the diff."],
       [FA.FaCommentDots, "Inline alert", "The finding shows the full data-flow path, right on the line."],
-      [FA.FaWandMagicSparkles, "Copilot Autofix", "A suggested, explained fix — accept it in a click."],
+      [FA.FaWandMagicSparkles, "Copilot Autofix", "A suggested, explained fix, reviewed like any other change."],
       [FA.FaCircleCheck, "Merge clean", "The bug class never enters main."],
     ];
     const bw = 2.7, gap = 0.45, y = 2.0, bh = 2.7;
@@ -532,17 +504,13 @@ I'm flagging this deliberately, because it's the bridge to my other talk on supp
       { x: M, y: 5.1, w: W - 2 * M, h: 0.5, fontFace: "Calibri", fontSize: 15, align: "center", isTextBox: true }
     );
     s.addNotes(
-`[WHERE IT LIVES — ~60 sec]
+`[WHERE IT LIVES — ~45 sec]  OPTIONAL: SKIP THIS SLIDE if you were behind at slide 6 (go 9 -> 11).
 
-"A finding is only useful if it reaches the developer at the right moment. So where does all this actually show up? In the pull request — not in a PDF nobody opens.
+"A finding only helps if it reaches the developer at the right moment, so this all shows up in the pull request. CodeQL runs as a check on the diff, the alert appears inline on the line with the full data-flow path, and Copilot Autofix suggests a fix with an explanation. That suggestion goes through the same review as any other change. Then you merge clean, and the bug class never enters main.
 
-Walk the flow. You open a PR. CodeQL runs as a check on the diff. If it finds something, the alert appears INLINE, right on the offending line, with that full data-flow path I showed you — so the developer sees not just 'this is wrong' but 'here's exactly how the bad data gets here.' Then Copilot Autofix proposes a concrete, explained fix you can accept in a click. And you merge clean — the bug class never enters main.
+Results that land where developers already work get fixed. Results in a report get ignored."
 
-[OPTIONAL LIVE BEAT: I can open PR #2 on the demo repo right here — it's the fix for the workflow injection — to show the real before/after and the alert resolving.]
-
-This is 'shift left' that actually sticks. The reason most security tooling fails isn't accuracy — it's that the results land somewhere developers never look. Put the fix in the PR, where they already are, and it gets fixed. Put it in a report, and it gets ignored."
-
-[Advance to slide 11.]`);
+[OPTIONAL LIVE BEAT, only if asked: PR #2 on the demo repo shows the real before/after and the alert closing. Don't demo Autofix itself. Advance to slide 11.]`);
   }
 
   // ================= SLIDE 11 — impact =================
