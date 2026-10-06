@@ -121,11 +121,11 @@ slide. The live attack below is now **OPTIONAL** (only if they ask to see it fir
   ```bash
   gh workflow disable "Issue triage (DEMO - vulnerable)" -R rod-trent/octo-notes-demo
   ```
-- [ ] Close any demo issues you opened:
-  ```bash
-  gh issue list -R rod-trent/octo-notes-demo
-  gh issue close <n> -R rod-trent/octo-notes-demo -c "demo cleanup"
+- [ ] Close any demo issues you opened (closes every open issue whose title contains `PWNED`; PowerShell):
+  ```powershell
+  gh issue list -R rod-trent/octo-notes-demo --state open --search "PWNED in:title" --json number --jq ".[].number" | ForEach-Object { gh issue close $_ -R rod-trent/octo-notes-demo -c "demo cleanup" }
   ```
+  Then confirm nothing is left: `gh issue list -R rod-trent/octo-notes-demo`
 - [ ] Offer the one-pager (`presentation/One-Pager-Leave-Behind.pdf`) and repo link to the panel.
 
 ---

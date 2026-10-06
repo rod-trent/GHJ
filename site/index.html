@@ -164,8 +164,9 @@
     <article class="card wide teardown">
       <h2><span class="num">5</span> Teardown, right after Talk 2</h2>
       <div class="cmd" data-copy><code>gh workflow disable "Issue triage (DEMO - vulnerable)" -R rod-trent/octo-notes-demo</code></div>
+      <p class="hint">Closes every open payload issue (title contains <code>PWNED</code>). PowerShell 5.1 or 7.</p>
+      <div class="cmd" data-copy><code>gh issue list -R rod-trent/octo-notes-demo --state open --search "PWNED in:title" --json number --jq ".[].number" | ForEach-Object { gh issue close $_ -R rod-trent/octo-notes-demo -c "demo cleanup" }</code></div>
       <div class="cmd" data-copy><code>gh issue list -R rod-trent/octo-notes-demo</code></div>
-      <div class="cmd" data-copy><code>gh issue close &lt;n&gt; -R rod-trent/octo-notes-demo -c "demo cleanup"</code></div>
     </article>
   </section>
 

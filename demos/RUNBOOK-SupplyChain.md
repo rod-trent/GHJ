@@ -81,7 +81,7 @@ gh workflow disable "Issue triage (DEMO - vulnerable)" -R rod-trent/octo-notes-d
    merged fix **auto-closed** the alert on the real workflow — detection + fix, end to end
    (ties to the CodeQL talk).
 
-> Afterwards: close the demo issue (`gh issue close <n> -R rod-trent/octo-notes-demo`) **and
+> Afterwards: close the demo issue (PowerShell: `gh issue list -R rod-trent/octo-notes-demo --state open --search "PWNED in:title" --json number --jq ".[].number" | ForEach-Object { gh issue close $_ -R rod-trent/octo-notes-demo -c "demo cleanup" }`) **and
 > disable the demo workflow** (Step 0 above).
 
 ## Talking points (map each to the kill chain)
