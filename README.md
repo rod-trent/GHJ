@@ -14,6 +14,13 @@ real tooling, they reinforce each other (detect ↔ prevent), and both demos run
 flaky conference network can't sink them. CodeQL even scans Actions workflows, so the same
 engine appears in both talks.
 
+## Demo Launchpad (web)
+
+**<https://rt-demo-launchpad.vercel.app>** (source in `site/`, static, deployed on Vercel). One
+tab per talk with copy-ready launch commands, the code on screen, a live check of whether the
+vulnerable demo workflow is armed, a pre-filled payload-issue link, and **terminal replays of real
+runs** for every demo as the backup plan. Redeploy with `cd site && npx vercel deploy --prod`.
+
 ## The shared demo app
 
 [`github.com/rod-trent/octo-notes-demo`](https://github.com/rod-trent/octo-notes-demo)
@@ -44,6 +51,7 @@ DRY-RUN-CHECKLIST.md      # day-of: pre-flight, per-demo rehearsal, teardown, pa
 prep/                     # FINAL-LOOP prep beyond the slides:
   01-Security-Lab-Research-Brief.md   # mission, programs, stats — "why the Lab"
   02-Candidate-Questions.md           # questions to ask them
+  09-Kevin-Backhouse-Interview.md     # Friday 11:00 behavioral: who he is, hooks, questions
   03-Technical-QA-Bank.md             # hardened follow-ups + interrupt handling
   04-Behavioral-Workbook.md           # STAR+Reflection fill-in for all 10 themes
 ```

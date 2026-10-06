@@ -23,7 +23,10 @@ function Show-Results($csv) {
 
 if (-not $SkipBuild) {
   Write-Host "`n=== Build the CodeQL database (code -> queryable data) ===" -ForegroundColor Cyan
-  & $CodeQL database create $db --language=javascript-typescript --source-root=$app --overwrite -q
+  # Keep the extractor's log/JVM warnings off the projector; surface them only on failure.
+  $log = & $CodeQL database create $db --language=javascript-typescript --source-root=$app --overwrite -q 2>&1
+  if ($LASTEXITCODE -ne 0) { $log | Write-Host; throw "CodeQL database create failed" }
+  Write-Host "Database ready: $db"
 }
 
 Write-Host "`n=== ACT 1: GitHub's security-extended suite, out of the box ===" -ForegroundColor Yellow

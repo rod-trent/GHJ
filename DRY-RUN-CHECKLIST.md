@@ -42,6 +42,7 @@ Two talks, three live demos. Work top to bottom. Boxes you can tick: `[ ]`.
 - [ ] **Terminal font bumped up** (≥ 18pt) for the demo terminals.
 - [ ] Browser logged in to GitHub; close noisy tabs, notifications, Slack/email.
 - [ ] These tabs pre-opened:
+  - [ ] **Demo Launchpad**: <https://rt-demo-launchpad.vercel.app> (launch steps + backup replays)
   - [ ] `github.com/rod-trent/octo-notes-demo` → **Security → Code scanning** (shows the 8 alerts)
   - [ ] The merged **PR #2** (the fix): `gh pr view 2 -R rod-trent/octo-notes-demo --web`
   - [ ] The repo's **Actions** tab
