@@ -69,6 +69,8 @@ code { font-family: var(--mono); font-size: .88em; }
 }
 .tabs button:hover, .codetabs button:hover { color: var(--text); background: var(--bg-elev); }
 .tabs button[aria-selected="true"], .codetabs button[aria-selected="true"] { color: var(--text); background: var(--bg-elev); border-color: var(--border); }
+body.audience .presenter, body:not(.audience) .audience { display: none !important; }
+.view-badge { flex: none; font: 600 12px "Mona Sans", sans-serif; color: var(--warn); background: none; border: 1px dashed var(--warn); border-radius: 999px; padding: 4px 10px; cursor: pointer; white-space: nowrap; }
 .theme-toggle { font-size: 18px; background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 8px; width: 36px; height: 36px; cursor: pointer; flex: none; }
 
 /* ---------- hero ---------- */

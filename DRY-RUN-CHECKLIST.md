@@ -43,6 +43,9 @@ Two talks, three live demos. Work top to bottom. Boxes you can tick: `[ ]`.
 - [ ] Browser logged in to GitHub; close noisy tabs, notifications, Slack/email.
 - [ ] These tabs pre-opened:
   - [ ] **Demo Launchpad**: <https://rt-demo-launchpad.vercel.app> (launch steps + backup replays)
+  - [ ] If you'll screen-share it: open <https://rt-demo-launchpad.vercel.app/?view=audience> (or press **A**). The amber
+    "Presenter view · A" badge in the header means coaching is showing; it disappears in audience view.
+    Panic card (not linked anywhere): `/#panic`
   - [ ] `github.com/rod-trent/octo-notes-demo` → **Security → Code scanning** (shows **7** open alerts: 5 code + 2 workflow; a 3rd was auto-closed by PR #2)
   - [ ] The merged **PR #2** (the fix): `gh pr view 2 -R rod-trent/octo-notes-demo --web`
   - [ ] The repo's **Actions** tab

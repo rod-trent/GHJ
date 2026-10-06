@@ -23,11 +23,27 @@
     store.set('theme', next);
   });
 
+  // ---------- presenter / audience view ----------
+  // Audience view hides coaching (timings, run order, talking points, teardown). Toggle with "A",
+  // or force it with ?view=audience / ?view=presenter (remembered per browser).
+  function setView(v) {
+    document.body.classList.toggle('audience', v === 'audience');
+    store.set('view', v);
+  }
+  const viewParam = new URLSearchParams(location.search).get('view');
+  setView(viewParam === 'audience' || viewParam === 'presenter' ? viewParam : (store.get('view') || 'presenter'));
+  $('#viewToggle').addEventListener('click', () => setView('audience'));
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'a' && e.key !== 'A') return;
+    if (e.ctrlKey || e.metaKey || e.altKey || /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+    setView(document.body.classList.contains('audience') ? 'presenter' : 'audience');
+  });
+
   // ---------- tabs ----------
   function showTab(name) {
     $$('.tabs [data-tab]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
     $$('[data-panel]').forEach((p) => { p.hidden = p.dataset.panel !== name; });
-    store.set('tab', name);
+    if (name !== 'panic') store.set('tab', name);   // panic is hidden: only reachable via #panic
     if (location.hash !== '#' + name) history.replaceState(null, '', '#' + name);
     window.scrollTo({ top: 0 });
   }

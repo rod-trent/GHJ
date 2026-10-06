@@ -23,8 +23,8 @@
     <nav class="tabs" role="tablist">
       <button role="tab" data-tab="codeql" aria-selected="true">1 · CodeQL</button>
       <button role="tab" data-tab="supply" aria-selected="false">2 · Supply chain</button>
-      <button role="tab" data-tab="panic" aria-selected="false">Panic card</button>
     </nav>
+    <button class="view-badge presenter" id="viewToggle" title="Switch to audience view (A)">Presenter view · A</button>
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark">◐</button>
   </div>
 </header>
@@ -34,21 +34,21 @@
   <!-- ============================== TALK 1 ============================== -->
   <section class="panel" data-panel="codeql">
     <div class="hero">
-      <p class="eyebrow">Talk 1 · ~12 min + Q&amp;A</p>
+      <p class="eyebrow">Talk 1<span class="presenter"> · ~12 min + Q&amp;A</span></p>
       <h1>CodeQL: find the bug class, not just the bug</h1>
       <p class="lede">The default suite misses a SQL injection. One sink-model row teaches CodeQL about <code>node:sqlite</code>, and it finds both variants while the safe query stays silent.</p>
-      <ol class="runorder">
+      <ol class="runorder presenter">
         <li>Slides 1–5</li><li class="demo">Act 1 · slide 6</li><li>Slide 7</li><li class="demo">Acts 2–3 · slide 8</li><li>Slides 9–12</li><li>Q&amp;A</li>
       </ol>
     </div>
 
     <div class="grid">
       <article class="card">
-        <h2><span class="num">1</span> Run it live (local, offline-safe)</h2>
-        <p class="hint">Pre-build the database before the talk (run once). On stage, add <code>-SkipBuild</code> for a fast start.</p>
+        <h2><span class="num">1</span> <span class="presenter">Run it live (local, offline-safe)</span><span class="audience">Run it live</span></h2>
+        <p class="hint presenter">Pre-build the database before the talk (run once). On stage, add <code>-SkipBuild</code> for a fast start.</p>
         <div class="cmd" data-copy><code>cd C:\Code\GHJ\demos\codeql; .\run-codeql-demo.ps1</code></div>
         <div class="cmd" data-copy><code>cd C:\Code\GHJ\demos\codeql; .\run-codeql-demo.ps1 -SkipBuild</code></div>
-        <ul class="beats">
+        <ul class="beats presenter">
           <li><b>Act 1:</b> XSS + path traversal found. <em>Ask the room why the SQLi is missing.</em></li>
           <li><b>Act 2:</b> show the YAML, rerun, and both SQLi lines (11, 20) light up. Line 29 stays silent.</li>
           <li><b>Act 3:</b> the 25-line taint-tracking query, with a source, a sink, and the flow between them.</li>
@@ -56,14 +56,14 @@
       </article>
 
       <article class="card">
-        <h2><span class="num">2</span> GitHub UI beat (needs network)</h2>
+        <h2><span class="num">2</span> <span class="presenter">GitHub UI beat (needs network)</span><span class="audience">On GitHub</span></h2>
         <div class="links">
           <a class="btn primary" target="_blank" rel="noopener" href="https://github.com/rod-trent/octo-notes-demo/security/code-scanning">Code scanning alerts ↗</a>
           <a class="btn" target="_blank" rel="noopener" href="https://github.com/rod-trent/octo-notes-demo">octo-notes-demo repo ↗</a>
           <a class="btn" target="_blank" rel="noopener" href="https://github.com/rod-trent/octo-notes-demo/tree/main/.github/codeql/extensions/node-sqlite-models">Model pack ↗</a>
           <a class="btn" target="_blank" rel="noopener" href="https://github.com/rod-trent/octo-notes-demo/blob/main/src/routes/notes.js">notes.js on GitHub ↗</a>
         </div>
-        <p class="hint">Point at <code>actions/code-injection</code> and <code>actions/untrusted-checkout</code>. The same engine scans workflows, which bridges to Talk 2.</p>
+        <p class="hint presenter">Point at <code>actions/code-injection</code> and <code>actions/untrusted-checkout</code>. The same engine scans workflows, which bridges to Talk 2.</p>
       </article>
     </div>
 
@@ -78,8 +78,8 @@
     </article>
 
     <article class="card wide">
-      <h2><span class="num">4</span> Backup: replay of a real run <span class="tag">captured Oct 6</span></h2>
-      <p class="hint">If the CLI stalls, replay this and keep narrating. It's the actual output with the build noise removed.</p>
+      <h2><span class="num">4</span> <span class="presenter">Backup: replay of a real run</span><span class="audience">Replay of a real run</span> <span class="tag">captured Oct 6</span></h2>
+      <p class="hint presenter">If the CLI stalls, replay this and keep narrating. It's the actual output with the build noise removed.</p>
       <div class="term" data-replay="codeql"></div>
     </article>
   </section>
@@ -87,10 +87,10 @@
   <!-- ============================== TALK 2 ============================== -->
   <section class="panel" data-panel="supply" hidden>
     <div class="hero">
-      <p class="eyebrow">Talk 2 · ~13 min + Q&amp;A</p>
+      <p class="eyebrow">Talk 2<span class="presenter"> · ~13 min + Q&amp;A</span></p>
       <h1>Breaking the chain: npm &amp; GitHub Actions</h1>
       <p class="lede">Same <code>npm install</code>, two npm versions. npm 11 runs the malicious <code>postinstall</code>. npm 12 blocks it by default. Then CI is the other door.</p>
-      <ol class="runorder">
+      <ol class="runorder presenter">
         <li>Slides 1–4</li><li class="demo">Live demo · slides 5–6</li><li>Slide 7</li><li class="walk">Walk-through · slide 8</li><li>Slides 9–13</li><li>Q&amp;A</li>
       </ol>
     </div>
@@ -98,11 +98,11 @@
     <div class="grid">
       <article class="card">
         <h2><span class="num">1</span> npm install-scripts demo (local)</h2>
-        <p class="hint">Run <code>-Prep</code> once on good wifi to cache npm 11 &amp; 12. Needs Node ≥ 24.15 for npm 12. Older Node still blocks, but prints an engine warning.</p>
-        <div class="cmd" data-copy><code>cd C:\Code\GHJ\demos\supply-chain\npm-install-scripts; .\run-demo.ps1 -Prep</code></div>
+        <p class="hint presenter">Run <code>-Prep</code> once on good wifi to cache npm 11 &amp; 12. Needs Node ≥ 24.15 for npm 12. Older Node still blocks, but prints an engine warning.</p>
+        <div class="cmd presenter" data-copy><code>cd C:\Code\GHJ\demos\supply-chain\npm-install-scripts; .\run-demo.ps1 -Prep</code></div>
         <div class="cmd" data-copy><code>cd C:\Code\GHJ\demos\supply-chain\npm-install-scripts; .\run-demo.ps1</code></div>
-        <div class="cmd" data-copy><code>node -v</code></div>
-        <ul class="beats">
+        <div class="cmd presenter" data-copy><code>node -v</code></div>
+        <ul class="beats presenter">
           <li><b>Act 1 · npm 11:</b> postinstall harvests the (fake) <code>NPM_TOKEN</code>. It would exfiltrate and re-publish.</li>
           <li><b>Act 2 · npm 12:</b> same install, and the script is blocked. Review with <code>npm install-scripts ls</code>.</li>
           <li><b>Line:</b> “The single highest-impact default change: the easy door is now closed.”</li>
@@ -110,29 +110,29 @@
       </article>
 
       <article class="card">
-        <h2><span class="num">2</span> Optional: live Actions injection</h2>
+        <h2><span class="num">2</span> <span class="presenter">Optional: live Actions injection</span><span class="audience">Live Actions injection</span></h2>
         <div class="status" id="wfStatus">
           <span class="dot"></span><span class="status-text">Checking demo workflow…</span>
           <button class="mini" id="wfRefresh" aria-label="Refresh status">↻</button>
         </div>
-        <p class="hint">GitHub's public API can lag up to a minute after <code>enable</code>/<code>disable</code>, and shared networks can exhaust its 60-calls/hour anonymous limit. The terminal is the source of truth:</p>
-        <div class="cmd" data-copy><code>gh workflow list -R rod-trent/octo-notes-demo --all</code></div>
+        <p class="hint presenter">GitHub's public API can lag up to a minute after <code>enable</code>/<code>disable</code>, and shared networks can exhaust its 60-calls/hour anonymous limit. The terminal is the source of truth:</p>
+        <div class="cmd presenter" data-copy><code>gh workflow list -R rod-trent/octo-notes-demo --all</code></div>
         <ol class="steps">
           <li>
             <span>Enable the demo workflow</span>
             <div class="cmd" data-copy><code>gh workflow enable "Issue triage (DEMO - vulnerable)" -R rod-trent/octo-notes-demo</code></div>
           </li>
           <li>
-            <span>Fire the payload. This opens a pre-filled issue, so just click <b>Create</b> (it only runs for the repo owner).</span>
+            <span>Fire the payload: a pre-filled issue whose title is shell code.<span class="presenter"> Click <b>Create</b> (it only runs for the repo owner).</span></span>
             <a class="btn danger" id="payloadLink" target="_blank" rel="noopener" href="#">Open malicious issue ↗</a>
             <div class="cmd" data-copy><code id="payloadText"></code></div>
           </li>
           <li>
-            <span>Show it run, then expand <b>Greet the issue author</b> and point at <code>PWNED as runner</code>.</span>
+            <span>Watch the run: the <b>Greet the issue author</b> step prints <code>PWNED as runner</code>.</span>
             <a class="btn" id="latestRun" target="_blank" rel="noopener" href="https://github.com/rod-trent/octo-notes-demo/actions/workflows/issue-triage-demo.yml">Demo workflow runs ↗</a>
           </li>
           <li>
-            <span>Show the fix and the closed alert.</span>
+            <span>The fix, and the alert it closed.</span>
             <div class="links">
               <a class="btn" target="_blank" rel="noopener" href="https://github.com/rod-trent/octo-notes-demo/pull/2">PR #2: the fix ↗</a>
               <a class="btn" target="_blank" rel="noopener" href="https://github.com/rod-trent/octo-notes-demo/security/code-scanning?query=rule%3Aactions%2Fcode-injection%2Fcritical">Code-injection alerts ↗</a>
@@ -143,7 +143,7 @@
     </div>
 
     <article class="card wide">
-      <h2><span class="num">3</span> Slide 8 walk-through: vulnerable vs. hardened</h2>
+      <h2><span class="num">3</span> <span class="presenter">Slide 8 walk-through: vulnerable vs. hardened</span><span class="audience">Vulnerable vs. hardened</span></h2>
       <p class="hint"><code>${{ }}</code> is pasted into the script <em>before</em> bash runs, so the title becomes code. Passing it through <code>env:</code> makes the shell treat it as data.</p>
       <div class="split">
         <div><div class="split-label bad">issue-triage-demo.yml: vulnerable</div><div class="codeview" data-static="wfBad"></div></div>
@@ -152,7 +152,7 @@
     </article>
 
     <article class="card wide">
-      <h2><span class="num">4</span> Backup replays <span class="tag">captured runs</span></h2>
+      <h2><span class="num">4</span> <span class="presenter">Backup replays</span><span class="audience">Replays</span> <span class="tag">captured runs</span></h2>
       <div class="codetabs" data-group="rp">
         <button data-replaytab="npm" aria-selected="true">npm 11 vs 12</button>
         <button data-replaytab="actions" aria-selected="false">Actions injection log</button>
@@ -161,7 +161,7 @@
       <div class="term" data-replay="actions" hidden></div>
     </article>
 
-    <article class="card wide teardown">
+    <article class="card wide teardown presenter">
       <h2><span class="num">5</span> Teardown, right after Talk 2</h2>
       <div class="cmd" data-copy><code>gh workflow disable "Issue triage (DEMO - vulnerable)" -R rod-trent/octo-notes-demo</code></div>
       <p class="hint">Closes every open payload issue (title contains <code>PWNED</code>). PowerShell 5.1 or 7.</p>

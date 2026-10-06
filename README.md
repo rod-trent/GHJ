@@ -19,7 +19,9 @@ engine appears in both talks.
 **<https://rt-demo-launchpad.vercel.app>** (source in `site/`, static, deployed on Vercel). One
 tab per talk with copy-ready launch commands, the code on screen, a live check of whether the
 vulnerable demo workflow is armed, a pre-filled payload-issue link, and **terminal replays of real
-runs** for every demo as the backup plan. **Auto-deploys on every push to `main`** (Vercel project
+runs** for every demo as the backup plan. **Two views:** presenter (default, with timings, run order,
+talking points, teardown) and **audience** (`?view=audience`, or press **A** to toggle), which hides the coaching
+for screen sharing. A hidden panic card lives at `#panic`. **Auto-deploys on every push to `main`** (Vercel project
 root = `site/`); to deploy without pushing, run `npx vercel deploy --prod` from the **repo root**.
 
 ## The shared demo app
