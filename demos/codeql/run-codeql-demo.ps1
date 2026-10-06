@@ -21,6 +21,13 @@ function Show-Results($csv) {
     Format-Table @{n='Finding';e={$_.Name}}, @{n='File';e={$_.Path}}, @{n='Line';e={$_.StartLine}} -AutoSize
 }
 
+# Run `codeql database analyze`, hiding the per-run file-coverage summary; anything else is shown.
+function Invoke-Analyze([string[]]$analyzeArgs) {
+  $out = & $CodeQL database analyze @analyzeArgs 2>&1 | ForEach-Object { "$_" }
+  if ($LASTEXITCODE -ne 0) { $out | Write-Host; throw "CodeQL database analyze failed" }
+  $out | Where-Object { $_ -notmatch '^CodeQL scanned \d+ out of \d+|^Typically CodeQL is configured' } | Write-Host
+}
+
 if (-not $SkipBuild) {
   Write-Host "`n=== Build the CodeQL database (code -> queryable data) ===" -ForegroundColor Cyan
   # Keep the extractor's log/JVM warnings off the projector; surface them only on failure.
@@ -30,19 +37,19 @@ if (-not $SkipBuild) {
 }
 
 Write-Host "`n=== ACT 1: GitHub's security-extended suite, out of the box ===" -ForegroundColor Yellow
-& $CodeQL database analyze $db $suite --format=csv --output="$env:TEMP\act1.csv" -q --rerun
+Invoke-Analyze @($db, $suite, '--format=csv', "--output=$env:TEMP\act1.csv", '-q', '--rerun')
 Show-Results "$env:TEMP\act1.csv"
 Read-Host "Press Enter for Act 2"
 
 Write-Host "`n=== ACT 2: Same queries + one line of YAML modeling node:sqlite ===" -ForegroundColor Green
 Get-Content (Join-Path $ext 'node-sqlite-models\models\node-sqlite.model.yml') | Select-Object -Last 5
-& $CodeQL database analyze $db $suite --additional-packs=$ext --model-packs=octo-notes/node-sqlite-models --format=csv --output="$env:TEMP\act2.csv" -q --rerun
+Invoke-Analyze @($db, $suite, "--additional-packs=$ext", '--model-packs=octo-notes/node-sqlite-models', '--format=csv', "--output=$env:TEMP\act2.csv", '-q', '--rerun')
 Show-Results "$env:TEMP\act2.csv"
 Read-Host "Press Enter for Act 3"
 
 Write-Host "`n=== ACT 3: Our own taint-tracking query ===" -ForegroundColor Magenta
 Push-Location (Join-Path $PSScriptRoot 'queries')
 & $CodeQL pack install -q 2>&1 | Out-Null
-& $CodeQL database analyze $db 2-SqliteInjection.ql --format=csv --output="$env:TEMP\act3.csv" -q --rerun
+Invoke-Analyze @($db, '2-SqliteInjection.ql', '--format=csv', "--output=$env:TEMP\act3.csv", '-q', '--rerun')
 Pop-Location
 Show-Results "$env:TEMP\act3.csv"
