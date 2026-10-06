@@ -43,7 +43,7 @@ Two talks, three live demos. Work top to bottom. Boxes you can tick: `[ ]`.
 - [ ] Browser logged in to GitHub; close noisy tabs, notifications, Slack/email.
 - [ ] These tabs pre-opened:
   - [ ] **Demo Launchpad**: <https://rt-demo-launchpad.vercel.app> (launch steps + backup replays)
-  - [ ] `github.com/rod-trent/octo-notes-demo` → **Security → Code scanning** (shows the 8 alerts)
+  - [ ] `github.com/rod-trent/octo-notes-demo` → **Security → Code scanning** (shows **7** open alerts: 5 code + 2 workflow; a 3rd was auto-closed by PR #2)
   - [ ] The merged **PR #2** (the fix): `gh pr view 2 -R rod-trent/octo-notes-demo --web`
   - [ ] The repo's **Actions** tab
 - [ ] Decks open in **Presenter View**; one-pager PDF handy if anyone wants it.

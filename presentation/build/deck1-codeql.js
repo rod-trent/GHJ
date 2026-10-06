@@ -487,7 +487,7 @@ That's it. Roughly twenty-five lines of readable logic, and it describes the ENT
       x += cw + 0.4;
     }
     s.addText(
-      [{ text: "Proven live in the demo repo: ", options: { color: HEX.muted } }, { text: "8 alerts — 5 in code, 3 in workflows.", options: { bold: true, color: HEX.greenLt } }],
+      [{ text: "Proven live in the demo repo: ", options: { color: HEX.muted } }, { text: "7 open alerts — 5 in code, 2 in workflows", options: { bold: true, color: HEX.greenLt } }, { text: " (a 3rd auto-closed by the fix).", options: { color: HEX.muted } }],
       { x: M, y: 5.8, w: W - 2 * M, h: 0.4, fontFace: "Calibri", fontSize: 14, align: "center", isTextBox: true }
     );
     s.addNotes(
@@ -497,7 +497,7 @@ That's it. Roughly twenty-five lines of readable logic, and it describes the ENT
 
 That matters because your pipeline is a juicy target. A malicious issue title or a pull request from a fork can hijack a workflow that's holding your secrets. CodeQL has query families for exactly this: 'code-injection' catches an attacker-controlled issue title getting pasted into a shell command, and 'untrusted-checkout' catches the 'pwn request' pattern — a workflow that runs untrusted fork code while your secrets are in scope.
 
-And this is real, not theoretical — the demo repo you can go look at right now has eight code-scanning alerts: five in the application code, and three in the workflows, from this same engine.
+And this is real, not theoretical — the demo repo you can go look at right now has seven open code-scanning alerts: five in the application code and two in the workflows, from this same engine. There was a third workflow alert. When I merged the fix for the issue-triage workflow, code scanning re-ran on the pull request and closed that alert automatically. That's detection and remediation in one loop, and I'll come back to it in the next talk.
 
 I'm flagging this deliberately, because it's the bridge to my other talk on supply-chain attacks. Same toolchain, two surfaces — your code and your pipelines — one PR experience. That's defense in depth from a single scan."
 

@@ -19,3 +19,6 @@ presentation/_packet.html
 
 # Office lock files
 ~$*
+
+# vercel link
+.vercel

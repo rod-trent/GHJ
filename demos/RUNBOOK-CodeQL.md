@@ -47,7 +47,7 @@ and the **safe parameterized** endpoint (`notes.js:29`) stays silent. No false p
 
 ## The GitHub UI beat (optional, needs network)
 
-The public repo already has **8 code-scanning alerts** (5 code + 3 workflow):
+The public repo has **7 open code-scanning alerts** (5 code + 2 workflow). A third workflow alert, on the real `issue-triage.yml`, was **auto-closed** when PR #2 merged, which is worth saying out loud:
 - Security tab: <https://github.com/rod-trent/octo-notes-demo/security/code-scanning>
 - Point out `actions/code-injection` and `actions/untrusted-checkout` — the bridge to
   the supply-chain talk: the same engine scans your workflows.

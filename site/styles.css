@@ -114,6 +114,7 @@ h1 { margin: 0 0 10px; font-size: clamp(28px, 4.2vw, 44px); line-height: 1.1; le
 .steps { margin: 0; padding-left: 20px; }
 .steps > li { margin: 0 0 14px; }
 .steps > li > span { display: block; font-size: 15px; }
+.status + .hint { margin: -8px 0 14px; font-size: 13px; }
 .status { display: flex; align-items: center; gap: 8px; font-size: 14px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; margin-bottom: 14px; }
 .status .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--muted); flex: none; }
 .status.on .dot { background: var(--danger); box-shadow: 0 0 0 4px color-mix(in srgb, var(--danger) 25%, transparent); }

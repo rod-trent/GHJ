@@ -401,8 +401,8 @@ jobs:
     try {
       const api = `https://api.github.com/repos/${REPO}/actions/workflows/${DEMO_WF}`;
       const [wf, runs] = await Promise.all([
-        fetch(api).then((r) => (r.ok ? r.json() : Promise.reject(r.status))),
-        fetch(`${api}/runs?per_page=1`).then((r) => (r.ok ? r.json() : { workflow_runs: [] })),
+        fetch(api, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : Promise.reject(r.status))),
+        fetch(`${api}/runs?per_page=1`, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : { workflow_runs: [] })),
       ]);
       const on = wf.state === 'active';
       statusEl.classList.add(on ? 'on' : 'off');
@@ -421,4 +421,15 @@ jobs:
   }
   $('#wfRefresh').addEventListener('click', refreshStatus);
   refreshStatus();
+  // Re-check when returning from the terminal (after `gh workflow enable`) or switching to Talk 2.
+  // No timer: unauthenticated GitHub API calls are limited to 60/hour.
+  let lastCheck = Date.now();
+  const recheck = () => {
+    if ($('[data-panel="supply"]').hidden || Date.now() - lastCheck < 10000) return;
+    lastCheck = Date.now();
+    refreshStatus();
+  };
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) recheck(); });
+  window.addEventListener('focus', recheck);
+  $('[data-tab="supply"]').addEventListener('click', recheck);
 })();
