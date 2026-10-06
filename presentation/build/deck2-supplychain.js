@@ -473,7 +473,7 @@ One: there's no single fix — it's layers. Each default change cuts one link: c
 
 Two: secure-by-default wins. The biggest gains protect the people who change nothing — install scripts off, checkout safe. That's how you move an entire ecosystem, not just the security-conscious few.
 
-Three: kill the long-lived token. If you do one thing after this talk, adopt OIDC trusted publishing. The thing attackers steal simply stops existing.
+Three: kill the long-lived token. If you do one thing after this talk, adopt OIDC trusted publishing. The thing attackers steal simply stops existing. And a security advisory can't stop a malicious publish that spreads within the same hour, which is why these controls are defaults, cooldown, and revocation rather than a CVE range.
 
 Concretely, on the bottom: upgrade to npm 12, adopt trusted publishing, pin your actions to a SHA, and turn on CodeQL for your workflows. That last one is the bridge to my other talk — prevention, which is everything we just covered, PLUS detection with CodeQL, is the complete story.
 

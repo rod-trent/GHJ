@@ -96,7 +96,7 @@ router.get('/:id', (req, res) => {
     },
     model: {
       good: [10],
-      notes: { 10: 'the one line: node:sqlite prepare/exec arg 0 is a "sql-injection" sink' },
+      notes: { 10: 'the sink-model row: node:sqlite prepare/exec arg 0 is a "sql-injection" sink' },
       src: `# Teach CodeQL that SQL strings passed to Node's built-in SQLite driver are
 # SQL-injection sinks. With this, the standard js/sql-injection query
 # (and every other query that uses the "sql-injection" sink kind) understands
@@ -245,7 +245,7 @@ jobs:
         ] },
         { label: 'Act 2', lines: [
           '',
-          'g|=== ACT 2: Same queries + one line of YAML modeling node:sqlite ===',
+          'g|=== ACT 2: Same queries + one sink-model row for node:sqlite ===',
           '  - addsTo:',
           '      pack: codeql/javascript-all',
           '      extensible: sinkModel',

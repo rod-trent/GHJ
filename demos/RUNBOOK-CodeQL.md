@@ -1,7 +1,7 @@
 # Demo runbook — CodeQL: "Find the bug class, not just the bug"
 
 **Goal:** show CodeQL (1) miss a SQL-injection bug the default suite doesn't model,
-(2) find it after one line of YAML, (3) show the underlying QL query — and that it
+(2) find it after one sink-model row, (3) show the underlying QL query — and that it
 also scans GitHub Actions workflows.
 
 **Time:** ~5–6 minutes of demo inside a 10–15 minute talk.
@@ -37,7 +37,7 @@ cd demos\codeql
 injection**. Ask the room *why* — because CodeQL doesn't yet know `node:sqlite`'s
 `.prepare()/.exec()` are SQL sinks. It's an unmodeled library, not a tool failure.
 
-**Act 2 — one line of YAML.** Show `node-sqlite.model.yml`. Rerun the *same* suite
+**Act 2 — one sink-model row.** Show `node-sqlite.model.yml`. Rerun the *same* suite
 with the model pack. Both SQLi variants (`notes.js:11`, `notes.js:20`) now light up —
 and the **safe parameterized** endpoint (`notes.js:29`) stays silent. No false positive.
 

@@ -28,6 +28,12 @@ function Invoke-Analyze([string[]]$analyzeArgs) {
   $out | Where-Object { $_ -notmatch '^CodeQL scanned \d+ out of \d+|^Typically CodeQL is configured' } | Write-Host
 }
 
+# An interrupted full run wipes the database (create --overwrite), so never trust -SkipBuild blindly.
+if ($SkipBuild -and -not (Test-Path (Join-Path $db 'codeql-database.yml'))) {
+  Write-Host "Pre-built database not found; building it now (~1 min)." -ForegroundColor DarkYellow
+  $SkipBuild = $false
+}
+
 if (-not $SkipBuild) {
   Write-Host "`n=== Build the CodeQL database (code -> queryable data) ===" -ForegroundColor Cyan
   # Keep the extractor's log/JVM warnings off the projector; surface them only on failure.
@@ -41,7 +47,7 @@ Invoke-Analyze @($db, $suite, '--format=csv', "--output=$env:TEMP\act1.csv", '-q
 Show-Results "$env:TEMP\act1.csv"
 Read-Host "Press Enter for Act 2"
 
-Write-Host "`n=== ACT 2: Same queries + one line of YAML modeling node:sqlite ===" -ForegroundColor Green
+Write-Host "`n=== ACT 2: Same queries + one sink-model row for node:sqlite ===" -ForegroundColor Green
 Get-Content (Join-Path $ext 'node-sqlite-models\models\node-sqlite.model.yml') | Select-Object -Last 5
 Invoke-Analyze @($db, $suite, "--additional-packs=$ext", '--model-packs=octo-notes/node-sqlite-models', '--format=csv', "--output=$env:TEMP\act2.csv", '-q', '--rerun')
 Show-Results "$env:TEMP\act2.csv"

@@ -68,10 +68,10 @@ const PW = 8.5, PH = 11, M = 0.55;
     movesLabel: "HOW CODEQL SOLVES IT",
     moves: [
       [FA.FaDatabase, "Code as data", "Compiles source into a queryable database of structure + data flow; QL describes the shape of a bug and finds every instance."],
-      [FA.FaFeatherPointed, "Models as data (MaD)", "One line of YAML teaches the whole query suite a new library's sinks — no new query, picked up by code scanning automatically."],
+      [FA.FaFeatherPointed, "Models as data (MaD)", "One sink-model row teaches the whole query suite a new library's sinks — no new query, picked up by code scanning automatically."],
       [FA.FaCubesStacked, "One engine, two surfaces", "Scans application code AND GitHub Actions workflows (code-injection, untrusted-checkout), with fixes in the PR via Copilot Autofix."],
     ],
-    demo: [{ text: "On a 60-line app, the default suite finds XSS + path traversal but ", options: {} }, { text: "misses the node:sqlite SQL injection", options: { bold: true, color: HEX.redLt } }, { text: ". One line of model YAML makes it find both variants — and stay silent on the safe parameterized query. A 25-line QL query shows the source→sink taint path.", options: {} }],
+    demo: [{ text: "On a 60-line app, the default suite finds XSS + path traversal but ", options: {} }, { text: "misses the node:sqlite SQL injection", options: { bold: true, color: HEX.redLt } }, { text: ". One sink-model row makes it find both variants — and stay silent on the safe parameterized query. A 25-line QL query shows the source→sink taint path.", options: {} }],
     demoH: 1.15,
     takeaways: [
       "Code is data — turns \u201cis this safe?\u201d into a precise, repeatable query.",

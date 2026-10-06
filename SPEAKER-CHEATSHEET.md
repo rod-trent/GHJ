@@ -15,7 +15,7 @@ speaker notes in the .pptx — this is the one-page version for the day.
 | Demo app "Octo Notes" + its deliberate blind spot | 5 | 0.5 |
 | **⏱ Checkpoint: start slide 6 by ~4:00.** Past ~4:30 → you'll skip slide 10 | | |
 | **DEMO Act 1:** default suite misses the SQLi | 6 | 1.5 |
-| Models-as-data: one line of YAML | 7 | 1.5 |
+| Models-as-data: one sink-model row | 7 | 1.5 |
 | **DEMO Acts 2–3:** SQLi found + the QL query | 8 | 1.5 |
 | Bridge: CodeQL also scans Actions (→ talk 2) | 9 | 1.5 |
 | *Optional:* in the PR (skip if behind; don't sell Autofix) | 10 | 0.75 |

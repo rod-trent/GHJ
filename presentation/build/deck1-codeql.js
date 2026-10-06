@@ -91,7 +91,7 @@ const FA = require("react-icons/fa6");
 
 "Thanks for having me. Rather than tour CodeQL's features, I want to show you one shift: turning 'is my code vulnerable?' from a judgment call into a question a computer answers precisely, across millions of lines.
 
-The plan: one small app, scanned live three times. The first scan finds some bugs and quietly misses one. One line of YAML makes it find the whole class it missed. Then I'll show you the query doing the work. Find the bug class, not just the bug."
+The plan: one small app, scanned live three times. The first scan finds some bugs and quietly misses one. One sink-model row in a YAML file makes it find the whole class it missed. Then I'll show you the query doing the work. Find the bug class, not just the bug."
 
 [Advance to slide 2.]`
     );
@@ -337,7 +337,7 @@ It's not a CodeQL bug. CodeQL doesn't yet know this library. node:sqlite is new,
   {
     const s = pres.addSlide({ masterName: "CONTENT" });
     kicker(s, "The fix behind the demo", HEX.purple);
-    title(s, "Teach the engine in one line: models as data");
+    title(s, "Teach the engine one row: models as data");
     s.addText(
       "CodeQL already knows the SQL-injection query. It just didn't know this library's functions were sinks. We tell it — in YAML, no query change.",
       { x: M, y: 1.35, w: W - 2 * M, h: 0.7, fontFace: "Calibri", fontSize: 16, color: HEX.sub, isTextBox: true }
@@ -373,7 +373,7 @@ So we tell it. This is a feature called 'models as data', or MaD. Look at the YA
 
 And here's why that's powerful — three things on the bottom. First, what it says: in plain English, 'treat the SQL string going into these calls as dangerous.' Second, why it's powerful: EVERY query that uses the sql-injection sink kind now understands this library — for free. Not just my demo query; the whole suite got smarter. Third, how it ships: you drop this file in a folder in your repo, dot-github-slash-codeql-slash-extensions, and code scanning picks it up automatically. No pipeline changes.
 
-This is the part I find genuinely elegant, and it's the heart of how the Security Lab works at scale: most of the time you're not writing new detection logic, you're extending the engine's MODEL of the world. And because it's just YAML, it gets reviewed like code and versioned like code. One line, reviewed in a PR, and thousands of repos get better.
+This is the part I find genuinely elegant, and it's the heart of how the Security Lab works at scale: most of the time you're not writing new detection logic, you're extending the engine's MODEL of the world. And because it's just YAML, it gets reviewed like code and versioned like code. One model row, reviewed in a PR, and thousands of repos get better.
 
 Let's prove it — same scan, with the model this time."
 
@@ -418,7 +418,7 @@ Let's prove it — same scan, with the model this time."
 `[LIVE DEMO — ACTS 2 & 3 — ~2 min]  >>> BACK TO TERMINAL <<<
 (The script pauses between acts — press Enter to continue each.)
 
-"Act two. Exact same security suite, exact same database — the only thing I've added is that one line of YAML. Watch.
+"Act two. Exact same security suite, exact same database — the only thing I've added is that one sink-model row. Watch.
 
 [Run Act 2.]
 
@@ -521,7 +521,7 @@ Results that land where developers already work get fixed. Results in a report g
     const left = [
       [FA.FaChartLine, "Coverage that compounds", "Model a library once; every repo and every future query benefits."],
       [FA.FaBullseye, "Signal over noise", "Data-flow precision means real paths — the safe code stayed silent."],
-      [FA.FaBoltLightning, "Fixed early and cheaply", "Caught in the PR with an explained, one-click fix."],
+      [FA.FaBoltLightning, "Fixed early and cheaply", "Caught in the PR, with the full path and a suggested fix."],
     ];
     const right = [
       [FA.FaUsers, "Expertise that scales", "One researcher's insight becomes everyone's default protection."],
@@ -546,7 +546,7 @@ Results that land where developers already work get fixed. Results in a report g
 
 "So what actually gets better? Six things, and they all come back to one word: leverage.
 
-Coverage that compounds — model a library once, and every repo and every future query benefits. Signal over noise — data-flow precision means you get real paths, and remember, the safe code stayed silent. Fixed early and cheaply — in the PR, with a one-click fix.
+Coverage that compounds — model a library once, and every repo and every future query benefits. Signal over noise — data-flow precision means you get real paths, and remember, the safe code stayed silent. Fixed early and cheaply — in the PR, before it ever merges.
 
 On the right: expertise that scales — one researcher's insight becomes everyone's default protection. One engine across many surfaces — app code and CI/CD, same workflow. And it's open and inspectable — the queries are open source, so you can audit them, extend them, and trust them.
 
@@ -565,7 +565,7 @@ The through-line: precision keeps developers trusting it, openness keeps securit
     const takeaways = [
       [FA.FaBrain, "Code is data", "CodeQL turns “is this safe?” into a precise, repeatable query."],
       [FA.FaLayerGroup, "Bug class > bug", "You find every instance of a pattern, not the one you grepped for."],
-      [FA.FaFeatherPointed, "Modeling is the lever", "One line of YAML taught the whole suite a new library — live."],
+      [FA.FaFeatherPointed, "Modeling is the lever", "One sink-model row taught the whole suite a new library — live."],
     ];
     let y = 1.9;
     for (const [ic, h, b] of takeaways) {
@@ -579,7 +579,7 @@ The through-line: precision keeps developers trusting it, openness keeps securit
       [
         { text: "Try it:  ", options: { bold: true, color: HEX.greenLt } },
         { text: "github.com/rod-trent/octo-notes-demo", options: { fontFace: "Consolas", color: HEX.ink } },
-        { text: "   —   turn on code scanning, open a PR, watch Autofix.", options: { color: HEX.sub } },
+        { text: "   —   turn on code scanning, open a PR, watch the alert fire.", options: { color: HEX.sub } },
       ],
       { x: M + 0.3, y: 5.95, w: W - 2 * M - 0.6, h: 0.6, fontFace: "Calibri", fontSize: 14.5, valign: "middle", isTextBox: true }
     );
@@ -592,11 +592,13 @@ One: code is data. CodeQL turns 'is this safe?' from a judgment call into a prec
 
 Two — and this is the title of the talk — you find the bug CLASS, not just the bug. You describe a pattern once and catch every instance, including the ones you'd never have grepped for.
 
-Three: modeling is the lever. You saw it live — one line of YAML taught the entire query suite about a new library, and a bug the default scanner missed became a finding.
+Three: modeling is the lever. You saw it live — one sink-model row taught the entire query suite about a new library, and a bug the default scanner missed became a finding.
 
-If you want to feel it yourself, the demo repo is right there — fork it, turn on code scanning, open a PR, and watch Autofix do its thing. It takes about five minutes.
+If you want to feel it yourself, the demo repo is right there — fork it, turn on code scanning, open a PR, and watch the alert fire on the PR. It takes about five minutes.
 
 That's 'describe the bug once, catch it everywhere.' Thank you — I'd love to take questions."
+
+[Don't offer Autofix. Only discuss it if they ask.]
 
 [END. Invite Q&A — see SPEAKER-CHEATSHEET.md for likely questions.]`);
   }

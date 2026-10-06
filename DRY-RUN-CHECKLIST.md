@@ -59,6 +59,8 @@ Two talks, three live demos. Work top to bottom. Boxes you can tick: `[ ]`.
   cd demos/codeql && pwsh -File run-codeql-demo.ps1
   ```
 - [ ] Confirm you saw: Act 1 misses SQLi → Act 2 finds both + safe one silent → Act 3 query.
+- [ ] **Don't Ctrl+C a full (non-`-SkipBuild`) run.** It wipes the pre-built database first. If the database
+  is missing, `-SkipBuild` now rebuilds it automatically (~1 min), so run it once more after any interruption.
 - [ ] **Backup ready:** `demos/backup/codeql-1..4-*.csv` open in an editor, in case the CLI stalls.
 - [ ] Decide whether you'll also show the live alerts in the Security tab (needs network).
 
