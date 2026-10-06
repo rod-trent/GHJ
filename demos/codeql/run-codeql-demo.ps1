@@ -21,11 +21,22 @@ function Show-Results($csv) {
     Format-Table @{n='Finding';e={$_.Name}}, @{n='File';e={$_.Path}}, @{n='Line';e={$_.StartLine}} -AutoSize
 }
 
+# Run the CodeQL CLI and return its output (stdout + stderr) as text; throw on a non-zero exit.
+# Windows PowerShell 5.1 turns redirected stderr (e.g. JVM warnings) into terminating errors under
+# ErrorActionPreference=Stop, so relax it for the native call and rely on the exit code instead.
+function Invoke-CodeQL([string]$what, [string[]]$cliArgs) {
+  $prev = $ErrorActionPreference
+  $ErrorActionPreference = 'Continue'
+  try { $out = & $CodeQL @cliArgs 2>&1 | ForEach-Object { "$_" } }
+  finally { $ErrorActionPreference = $prev }
+  if ($LASTEXITCODE -ne 0) { $out | Write-Host; throw "CodeQL $what failed" }
+  $out
+}
+
 # Run `codeql database analyze`, hiding the per-run file-coverage summary; anything else is shown.
 function Invoke-Analyze([string[]]$analyzeArgs) {
-  $out = & $CodeQL database analyze @analyzeArgs 2>&1 | ForEach-Object { "$_" }
-  if ($LASTEXITCODE -ne 0) { $out | Write-Host; throw "CodeQL database analyze failed" }
-  $out | Where-Object { $_ -notmatch '^CodeQL scanned \d+ out of \d+|^Typically CodeQL is configured' } | Write-Host
+  Invoke-CodeQL 'database analyze' (@('database', 'analyze') + $analyzeArgs) |
+    Where-Object { $_ -notmatch '^CodeQL scanned \d+ out of \d+|^Typically CodeQL is configured' } | Write-Host
 }
 
 # An interrupted full run wipes the database (create --overwrite), so never trust -SkipBuild blindly.
@@ -37,8 +48,7 @@ if ($SkipBuild -and -not (Test-Path (Join-Path $db 'codeql-database.yml'))) {
 if (-not $SkipBuild) {
   Write-Host "`n=== Build the CodeQL database (code -> queryable data) ===" -ForegroundColor Cyan
   # Keep the extractor's log/JVM warnings off the projector; surface them only on failure.
-  $log = & $CodeQL database create $db --language=javascript-typescript --source-root=$app --overwrite -q 2>&1
-  if ($LASTEXITCODE -ne 0) { $log | Write-Host; throw "CodeQL database create failed" }
+  Invoke-CodeQL 'database create' @('database', 'create', $db, '--language=javascript-typescript', "--source-root=$app", '--overwrite', '-q') | Out-Null
   Write-Host "Database ready: $db"
 }
 
@@ -55,7 +65,7 @@ Read-Host "Press Enter for Act 3"
 
 Write-Host "`n=== ACT 3: Our own taint-tracking query ===" -ForegroundColor Magenta
 Push-Location (Join-Path $PSScriptRoot 'queries')
-& $CodeQL pack install -q 2>&1 | Out-Null
+Invoke-CodeQL 'pack install' @('pack', 'install', '-q') | Out-Null
 Invoke-Analyze @($db, '2-SqliteInjection.ql', '--format=csv', "--output=$env:TEMP\act3.csv", '-q', '--rerun')
 Pop-Location
 Show-Results "$env:TEMP\act3.csv"

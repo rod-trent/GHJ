@@ -97,7 +97,7 @@ h1 { margin: 0 0 10px; font-size: clamp(28px, 4.2vw, 44px); line-height: 1.1; le
 
 /* ---------- commands ---------- */
 .cmd { position: relative; display: flex; align-items: center; gap: 8px; background: var(--bg-inset); border: 1px solid var(--border); border-radius: 8px; padding: 8px 8px 8px 12px; margin: 8px 0; }
-.cmd code { flex: 1; min-width: 0; overflow-x: auto; white-space: pre; font-size: 13px; scrollbar-width: thin; }
+.cmd code { flex: 1; min-width: 0; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 13px; }
 .copy { flex: none; font: 600 12px "Mona Sans", sans-serif; color: var(--muted); background: var(--bg-elev); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; cursor: pointer; }
 .copy:hover { color: var(--text); }
 .copy.ok { color: var(--accent); border-color: var(--accent); }

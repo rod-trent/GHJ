@@ -14,10 +14,17 @@ $Npm11  = 'npm@11.11.0'
 $Npm12  = 'npm@12.1.0'
 
 function Invoke-Npm($version, [string[]]$npmArgs) {
-  # Filter Node-engine noise so the audience sees only what matters.
-  & npx -y --prefer-offline $version @npmArgs 2>&1 |
-    ForEach-Object { "$_" } |
-    Where-Object { $_ -notmatch 'EBADENGINE|does not support Node|^npm warn EBADENGINE|^\s*(package|required|current):|^\s*}$' }
+  # npm writes warnings/notices to stderr. Windows PowerShell 5.1 turns redirected stderr into
+  # terminating errors under ErrorActionPreference=Stop, so relax it for the native call.
+  $prev = $ErrorActionPreference
+  $ErrorActionPreference = 'Continue'
+  try {
+    # Filter Node-engine noise so the audience sees only what matters.
+    & npx -y --prefer-offline $version @npmArgs 2>&1 |
+      ForEach-Object { "$_" } |
+      Where-Object { $_ -notmatch 'EBADENGINE|does not support Node|^npm warn EBADENGINE|^\s*(package|required|current):|^\s*}$' }
+  }
+  finally { $ErrorActionPreference = $prev }
 }
 
 function Reset-App {
@@ -32,8 +39,12 @@ function Reset-App {
 
 # Build the "malicious" tarball the victim app depends on
 Push-Location (Join-Path $here 'evil-pkg')
+$ErrorActionPreference = 'Continue'   # npm pack prints notices on stderr (see Invoke-Npm)
 npm pack --pack-destination (Join-Path $app 'vendor') *> $null
+$packExit = $LASTEXITCODE
+$ErrorActionPreference = 'Stop'
 Pop-Location
+if ($packExit -ne 0) { throw "npm pack failed (exit $packExit)" }
 
 if ($Prep) {
   Invoke-Npm $Npm11 @('--version') | Out-Null
