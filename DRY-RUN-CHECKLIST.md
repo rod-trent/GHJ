@@ -45,7 +45,10 @@ Two talks; the demos are presented from captured runs on the launchpad. Work top
   - [ ] **Demo Launchpad**: <https://rt-demo-launchpad.vercel.app> (launch steps + the captured runs you present)
   - [ ] If you'll screen-share it: open <https://rt-demo-launchpad.vercel.app/?view=audience> (or press **A**). The amber
     "Presenter view · A" badge in the header means coaching is showing; it disappears in audience view.
-    Panic card (not linked anywhere): `/#panic`
+    Panic card (not linked anywhere): `/#panic`. Jump straight to a talk with `/#codeql` or `/#supply`.
+  - [ ] **Replay check, at the size you'll share:** step through every replay once in audience view, then
+    hit **Reset** on each so they start at ▶ Build DB / ▶ Act 1 · npm 11 / ▶ Run log. Make sure long
+    lines (CodeQL Act 2's line numbers, the npm warnings) aren't cut off on the right; if they are, widen the window.
   - [ ] `github.com/rod-trent/octo-notes-demo` → **Security → Code scanning** (shows **7** open alerts: 5 code + 2 workflow; a 3rd was auto-closed by PR #2)
   - [ ] The merged **PR #2** (the fix): `gh pr view 2 -R rod-trent/octo-notes-demo --web`
   - [ ] The repo's **Actions** tab
@@ -115,6 +118,14 @@ The steps below are kept for reference only.
 - [ ] Narrate every demo step: what you're doing, why, what to watch for.
 - [ ] Demos are **captured runs**: say once per talk that you ran them ahead of time. If the launchpad won't load,
   open `demos/backup/`, keep talking, move on. Don't debug on stage.
+- [ ] **Driving the replays:**
+  - Click ▶ **once**, then wait until the output stops and the button shows the next step. A click while
+    it's still printing does nothing.
+  - The ▶ button can **jump** (left to right) when its label gets longer. Look before each click.
+  - **Don't reload between CodeQL slide 6 and slide 8.** The replay is on the same card and picks up at
+    ▶ Act 2; a reload starts it over at Build DB. (If it happens: Show all, then talk over Acts 2–3.)
+  - Keep the launchpad window **in front** while it plays. Browsers slow down timers in background windows,
+    and the output crawls.
 - [ ] Watch the clock in Presenter View. **Checkpoints:** CodeQL, start slide 6 by ~4:00 (past ~4:30 → skip
   slide 10). Supply chain, done with slides 1–4 by ~3:00.
 - [ ] Supply chain slide 8: narrate from the **launchpad diff** (Talk 2 → card 3). If asked to see it fire, show the
