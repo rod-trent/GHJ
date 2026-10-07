@@ -6,13 +6,13 @@ Two talks; the demos are presented from captured runs on the launchpad. Work top
 
 ## T-minus 1 day — environment (do this on wifi, not at the venue)
 
-- [ ] **Node version supports npm 12** — needs **≥ 24.15.0**:
+- [ ] *Optional (only for the npm sanity check):* **Node version supports npm 12** — needs **≥ 24.15.0**:
   ```bash
   node -v
   ```
   If lower, upgrade (e.g. `nvm install 24` / install latest 24.x) and re-check. npm 12 still
   *blocks* on older Node but prints an engine warning on screen.
-- [ ] **CodeQL CLI present** at `C:\Code\tools\codeql\codeql.exe`:
+- [ ] *Optional (only for the CodeQL sanity check):* **CodeQL CLI present** at `C:\Code\tools\codeql\codeql.exe`:
   ```bash
   C:\Code\tools\codeql\codeql.exe version
   ```
@@ -26,7 +26,7 @@ Two talks; the demos are presented from captured runs on the launchpad. Work top
   ```bash
   gh auth status
   ```
-- [ ] **Pre-cache npm 11 & 12** so Demo 1 runs offline and fast:
+- [ ] *Optional (only for the npm sanity check):* **Pre-cache npm 11 & 12** so the real run is offline and fast:
   ```bash
   cd demos/supply-chain/npm-install-scripts && pwsh -File run-demo.ps1 -Prep
   ```
