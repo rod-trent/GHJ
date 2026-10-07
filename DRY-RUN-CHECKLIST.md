@@ -70,15 +70,16 @@ Two talks; the demos are presented from captured runs on the launchpad. Work top
 
 ## Talk 1 — CodeQL (demo pre-flight)
 
-- [ ] Dry-run the 3-act script once so the DB is pre-built (keeps the live run snappy):
+- [ ] **On stage you present the captured run** (launchpad, Talk 1 → card 4), not a live CLI run. Click ▶ through
+  every act once so you know the rhythm. Fallback if the site won't load: `demos/backup/codeql-1..4-*.csv`.
+- [ ] *Optional sanity check* (only if you want to confirm the real tool still matches the captured output,
+  or expect a "can you run it?" follow-up after the talk):
   ```bash
   cd demos/codeql && pwsh -File run-codeql-demo.ps1
   ```
-- [ ] Confirm you saw: Act 1 misses SQLi → Act 2 finds both + safe one silent → Act 3 query.
-- [ ] **Don't Ctrl+C a full (non-`-SkipBuild`) run.** It wipes the pre-built database first. If the database
-  is missing, `-SkipBuild` now rebuilds it automatically (~1 min), so run it once more after any interruption.
-- [ ] **On stage you present the captured run** (launchpad, Talk 1 → card 4), not a live CLI run. Click ▶ through
-  every act once so you know the rhythm. Fallback if the site won't load: `demos/backup/codeql-1..4-*.csv`.
+  You should see the same story as the replay: Act 1 misses the SQLi → Act 2 finds lines 11 and 20, line 29
+  stays silent → Act 3's query finds 11 and 20. Takes a few minutes. **Don't Ctrl+C a full run:** it wipes the
+  database first. If that happens, run it again (or with `-SkipBuild`, which rebuilds it in ~1 min).
 - [ ] Decide whether you'll also show the live alerts in the Security tab (needs network).
 
 **Run order on stage:** slides 1–5 → **demo Act 1** (slide 6, captured run) → slide 7 → **demo Acts 2–3**
