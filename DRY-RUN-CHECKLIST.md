@@ -90,15 +90,15 @@ Two talks; the demos are presented from captured runs on the launchpad. Work top
 ## Talk 2 — Supply chain (demo pre-flight)
 
 **Demo 1 — npm install scripts (local, offline-safe)**
-- [ ] `node -v` ≥ 24.15 (re-confirm on the venue machine).
-- [ ] Dry-run once:
+- [ ] **On stage you present the captured run** (launchpad, Talk 2 → card 4 → npm 11 vs 12). Click ▶ through
+  Act 1, Act 2, Review once.
+- [ ] *Optional sanity check* (only if you want to confirm the real npm behavior still matches the captured
+  output, or expect a "can you run it?" follow-up after the talk). Needs `node -v` ≥ 24.15:
   ```bash
   cd demos/supply-chain/npm-install-scripts && pwsh -File run-demo.ps1
   ```
-- [ ] Confirm: npm 11 runs the postinstall ("harvested … / would POST / would re-publish");
-  npm 12 **blocks** it.
-- [ ] **On stage you present the captured run** (launchpad, Talk 2 → card 4 → npm 11 vs 12). Click ▶ through
-  Act 1, Act 2, Review once.
+  You should see the same story as the replay: npm 11 runs the postinstall ("harvested … / would POST /
+  would re-publish"); npm 12 **blocks** it.
 
 **Slide 8 is a walk-through, not a live demo** — you just talk over the vulnerable-vs-hardened
 slide. **Not firing the attack live in the interview**; if asked, show the captured Actions log (Talk 2 → card 4).
