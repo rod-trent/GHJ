@@ -23,7 +23,7 @@ speaker notes in the .pptx — this is the one-page version for the day.
 
 **One-liner:** *"Describe the bug once, catch it everywhere."*
 
-**Demo command (DB pre-built):** `cd demos\codeql; .\run-codeql-demo.ps1 -SkipBuild`
+**Demo:** captured run on the launchpad (Talk 1 → card 4 "Run output"), click ▶ per act. Say once that you captured it ahead of time.
 
 ---
 
@@ -37,7 +37,7 @@ speaker notes in the .pptx — this is the one-page version for the day.
 | **⏱ Checkpoint: slides 1–4 done by ~3:00** | | |
 | **DEMO:** install scripts — npm 11 runs it, npm 12 blocks it (protect this) | 5–6 | 3 |
 | CI is the other door (script injection, pwn request) → CodeQL | 7 | 1 |
-| **Walk-through from the launchpad diff** (Talk 2 → card 3); live run only if armed + teardown rehearsed | 8 | 1.5 |
+| **Walk-through from the launchpad diff** (Talk 2 → card 3); if asked to see it fire, show the captured Actions log (card 4) | 8 | 1.5 |
 | Prevention: safe-by-default CI | 9 | 1 |
 | Prevention: kill the token (OIDC, staged publish, revoke) | 10 | 1 |
 | Containment: Dependabot cooldown | 11 | 0.5 |
@@ -45,10 +45,9 @@ speaker notes in the .pptx — this is the one-page version for the day.
 
 **One-liner:** *"Make the attack expensive at every step."*
 
-**One live demo** (slides 5–6): `cd demos\supply-chain\npm-install-scripts; .\run-demo.ps1`
-(run `-Prep` once on wifi first). Slide 8 is a **visual walk-through**, not performed.
-*Optional* live Actions injection is available if they ask — see runbook (enable the demo
-workflow first).
+**One demo** (slides 5–6): captured run on the launchpad (Talk 2 → card 4, **npm 11 vs 12**), click ▶ per act.
+Say once that you captured it ahead of time. Slide 8 is a **visual walk-through**, not performed.
+No live Actions injection in the interview; if asked, show the **Actions injection log** tab.
 
 ---
 

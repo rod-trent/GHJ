@@ -91,7 +91,7 @@ const FA = require("react-icons/fa6");
 
 "Thanks for having me. Rather than tour CodeQL's features, I want to show you one shift: turning 'is my code vulnerable?' from a judgment call into a question a computer answers precisely, across millions of lines.
 
-The plan: one small app, scanned live three times. The first scan finds some bugs and quietly misses one. One sink-model row in a YAML file makes it find the whole class it missed. Then I'll show you the query doing the work. Find the bug class, not just the bug."
+The plan: one small app, scanned three times. The first scan finds some bugs and quietly misses one. One sink-model row in a YAML file makes it find the whole class it missed. Then I'll show you the query doing the work. Find the bug class, not just the bug."
 
 [Advance to slide 2.]`
     );
@@ -282,13 +282,13 @@ The result isn't just a line number. It's the full path: where the tainted data 
 It also has a deliberate blind spot. The default scanner is going to miss the SQL injection, and that miss is the whole story."
 
 [CLOCK CHECK: you should be under 4:00 here. If you start slide 6 past ~4:30, you're behind: plan to SKIP slide 10.]
-[Advance to slide 6, then switch to the terminal.]`);
+[Advance to slide 6, then switch to the launchpad.]`);
   }
 
   // ================= SLIDE 6 — DEMO Act 1 =================
   {
     const s = pres.addSlide({ masterName: "DARK" });
-    kicker(s, "Live demo · Act 1", HEX.green);
+    kicker(s, "Demo · Act 1", HEX.green);
     title(s, "Run the default suite — and watch it miss one");
     card(s, M, 1.55, W - 2 * M, 1.7, HEX.panel);
     s.addText("Terminal", { x: M + 0.25, y: 1.65, w: 3, h: 0.3, fontFace: "Calibri", fontSize: 11, color: HEX.muted, isTextBox: true });
@@ -314,13 +314,15 @@ It also has a deliberate blind spot. The default scanner is going to miss the SQ
       y += 0.82;
     }
     s.addNotes(
-`[LIVE DEMO — ACT 1 — ~90 sec]  >>> SWITCH TO TERMINAL <<<
+`[DEMO — ACT 1 — ~90 sec]  >>> SWITCH TO LAUNCHPAD: Talk 1, card 4 "Run output" <<<
 [CLOCK: past ~4:30 at this point? Then skip slide 10 later (go 9 -> 11).]
-Command:  cd demos\\codeql ; .\\run-codeql-demo.ps1 -SkipBuild   (database is pre-built; Act 1 takes ~30 sec)
+(Captured run, not live. Click ▶ once per act; don't use "Show all".)
 
-"The database is already built. That's the extraction step we just talked about, and it takes about a minute, so I ran it before we started. Now I'm running 'database analyze' with GitHub's security-extended suite, the same queries code scanning runs by default.
+"These runs take a few minutes, so I captured them ahead of time. This is the real output.
 
-[While it runs, ~30 sec:] Remember the endpoints: two injectable, one safe, plus a file read and an HTML echo.
+[Click ▶ Build DB.] First, build the database: the extraction step we just talked about. Then 'database analyze' with GitHub's security-extended suite, the same queries code scanning runs by default.
+
+[Click ▶ Act 1.] Remember the endpoints: two injectable, one safe, plus a file read and an HTML echo.
 
 [Results.] It found the reflected XSS in preview.js and the path traversal in attachments.js. Two real bugs, out of the box.
 
@@ -330,7 +332,7 @@ But the SQL injection? Missed. Both variants. So, a question for you: why would 
 
 It's not a CodeQL bug. CodeQL doesn't yet know this library. node:sqlite is new, and the engine doesn't know that .prepare() and .exec() are where SQL executes, the 'sink.' It sees the user input. It just can't see the finish line. That's not a dead end; it's the most interesting moment in the talk."
 
-[BACKUP if the CLI stalls: launchpad, Talk 1, card 4 replay (or demos/backup/codeql-1-default-suite.csv). Advance to slide 7.]`);
+[If the launchpad won't load: demos/backup/codeql-1-default-suite.csv. Advance to slide 7.]`);
   }
 
   // ================= SLIDE 7 — models as data =================
@@ -383,7 +385,7 @@ Let's prove it — same scan, with the model this time."
   // ================= SLIDE 8 — DEMO Act 2 + 3 =================
   {
     const s = pres.addSlide({ masterName: "DARK" });
-    kicker(s, "Live demo · Acts 2 & 3", HEX.green);
+    kicker(s, "Demo · Acts 2 & 3", HEX.green);
     title(s, "Same scan, now it sees the whole class");
     // Act 2 results
     card(s, M, 1.55, 6.0, 4.9, HEX.panel);
@@ -415,24 +417,24 @@ Let's prove it — same scan, with the model this time."
       mono("TaintTracking::flowPath(src, sink)", { color: HEX.sub }),
     ], { x: rx + 0.25, y: 2.15, w: W - rx - M - 0.5, h: 4.1, fontSize: 12.5, isTextBox: true, valign: "top" });
     s.addNotes(
-`[LIVE DEMO — ACTS 2 & 3 — ~2 min]  >>> BACK TO TERMINAL <<<
-(The script pauses between acts — press Enter to continue each.)
+`[DEMO — ACTS 2 & 3 — ~2 min]  >>> BACK TO LAUNCHPAD: Talk 1, card 4 <<<
+(Same captured run; it's waiting on ▶ Act 2.)
 
-"Act two. Exact same security suite, exact same database — the only thing I've added is that one sink-model row. Watch.
+"Act two. Exact same security suite, exact same database — the only thing I've added is that one sink-model row.
 
-[Run Act 2.]
+[Click ▶ Act 2.]
 
 There it is. Both SQL-injection variants now light up — notes.js line 11, the search endpoint, and line 20, the by-owner endpoint. The engine followed the user input all the way to the modeled sink.
 
 And here's the part I promised you — look: the parameterized endpoint on line 29 is NOT flagged. No false positive. CodeQL understands that a parameterized query is safe, so it stays quiet. That precision is everything — a scanner that cries wolf gets turned off.
 
-[Run Act 3.]
+[Click ▶ Act 3.]
 
 Last act — let me pull back the curtain and show you the actual query, so this isn't magic. It's three ideas. A SOURCE: 'RemoteFlowSource' — that's anything an attacker controls, any request parameter, header, body. A SINK: our node:sqlite call, the one we just modeled. And then 'TaintTracking dot flowPath' — that's the engine connecting the two, following the data through every hop in between.
 
 That's it. Roughly twenty-five lines of readable logic, and it describes the ENTIRE class of SQL-injection bug — not the one I grepped for, all of them."
 
-[BACKUP: demos/backup/codeql-2 and codeql-3 CSVs. Advance to slide 9.]`);
+[If the launchpad won't load: demos/backup/codeql-2 and codeql-3 CSVs. Advance to slide 9.]`);
   }
 
   // ================= SLIDE 9 — beyond your code (bridge) =================
@@ -565,7 +567,7 @@ The through-line: precision keeps developers trusting it, openness keeps securit
     const takeaways = [
       [FA.FaBrain, "Code is data", "CodeQL turns “is this safe?” into a precise, repeatable query."],
       [FA.FaLayerGroup, "Bug class > bug", "You find every instance of a pattern, not the one you grepped for."],
-      [FA.FaFeatherPointed, "Modeling is the lever", "One sink-model row taught the whole suite a new library — live."],
+      [FA.FaFeatherPointed, "Modeling is the lever", "One sink-model row taught the whole suite a new library."],
     ];
     let y = 1.9;
     for (const [ic, h, b] of takeaways) {
@@ -592,7 +594,7 @@ One: code is data. CodeQL turns 'is this safe?' from a judgment call into a prec
 
 Two — and this is the title of the talk — you find the bug CLASS, not just the bug. You describe a pattern once and catch every instance, including the ones you'd never have grepped for.
 
-Three: modeling is the lever. You saw it live — one sink-model row taught the entire query suite about a new library, and a bug the default scanner missed became a finding.
+Three: modeling is the lever. You saw it — one sink-model row taught the entire query suite about a new library, and a bug the default scanner missed became a finding.
 
 If you want to feel it yourself, the demo repo is right there — fork it, turn on code scanning, open a PR, and watch the alert fire on the PR. It takes about five minutes.
 

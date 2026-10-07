@@ -46,7 +46,7 @@ const FA = require("react-icons/fa6");
 
 "Thanks for having me. One maintainer gets phished on a Tuesday. By Wednesday, malware is riding inside hundreds of packages. We saw that pattern again and again with Shai-Hulud and the tj-actions compromise, because these attacks spread on the ecosystem's own trust.
 
-There's no silver bullet. The defense is to cut every link in the chain. I'll show npm blocking a malicious install live, then walk through a CI pipeline hijacked by nothing more than an issue title."
+There's no silver bullet. The defense is to cut every link in the chain. I'll show npm blocking a malicious install, then walk through a CI pipeline hijacked by nothing more than an issue title."
 
 [Advance to slide 2.]`);
   }
@@ -159,7 +159,7 @@ None of these stops everything alone. Together they make the attack expensive at
   // ================= SLIDE 5 — DEMO 1 setup =================
   {
     const s = pres.addSlide({ masterName: "CONTENT" });
-    kicker(s, "Live demo · the biggest single change", HEX.green);
+    kicker(s, "Demo · the biggest single change", HEX.green);
     title(s, "Install scripts: the attacker's favorite door");
     s.addText("A package's postinstall script runs automatically on npm install — with your shell, your environment, your tokens. It's the classic credential-theft vector.", { x: M, y: 1.35, w: W - 2 * M, h: 0.7, fontFace: "Calibri", fontSize: 16, color: HEX.sub, isTextBox: true });
     card(s, M, 2.3, W - 2 * M, 2.0, "1A1012");
@@ -187,13 +187,13 @@ Look at the package.json on the slide — this is my stand-in malicious dependen
 
 The three properties on the bottom are why attackers love it: it runs silently, it has full access to your environment, and it spreads instantly. For years, this was on by default. Watch what npm 12 does about it."
 
-[Advance to slide 6 — run the demo.]`);
+[Advance to slide 6, then switch to the launchpad.]`);
   }
 
   // ================= SLIDE 6 — DEMO 1 results =================
   {
     const s = pres.addSlide({ masterName: "DARK" });
-    kicker(s, "Live demo · the fix", HEX.green);
+    kicker(s, "Demo · the fix", HEX.green);
     title(s, "Same install. npm 12 shuts the door.");
     // Act 1
     card(s, M, 1.6, 5.95, 4.8, "1A1012");
@@ -211,23 +211,24 @@ The three properties on the bottom are why attackers love it: it runs silently, 
     await iconChip(s, FA.FaCircleCheck, rx + 0.25, 5.75, 0.5, HEX.green);
     s.addText("Script never ran. You decide, explicitly.", { x: rx + 0.9, y: 5.78, w: 5, h: 0.45, fontFace: "Calibri", fontSize: 12.5, color: HEX.greenLt, bold: true, valign: "middle", isTextBox: true });
     s.addNotes(
-`[LIVE DEMO — ~3 min]  >>> SWITCH TO TERMINAL <<<
-Command:  cd demos\\supply-chain\\npm-install-scripts ; .\\run-demo.ps1
-(Prereq: node -v must be >= 24.15. Run '.\\run-demo.ps1 -Prep' once on wifi beforehand.)
+`[DEMO — ~3 min]  >>> SWITCH TO LAUNCHPAD: Talk 2, card 4 "Run output", npm 11 vs 12 tab <<<
+(Captured run, not live. Click ▶ once per act; don't use "Show all".)
 
-"Same project, same dependency, two different versions of npm. Watch the difference.
+"Same project, same dependency, two different versions of npm. The installs take a while, so I captured this run ahead of time. It's the real output.
 
-[ACT 1 — npm 11.] Here's today's default for most people. I run npm install...
+[Click ▶ Act 1 · npm 11.] Here's today's default for most people: npm install...
 
-[Let it run.] ...and there it goes. The postinstall fired. It found my NPM_TOKEN — that's a fake one for the demo — and it's telling us exactly what it would do: POST those credentials to an attacker server, and re-publish itself into my packages. Game over, and all I did was install a dependency. Your credentials are gone before you even read the output.
+...and there it goes. The postinstall fired. It found my NPM_TOKEN — that's a fake one for the demo — and it's telling us exactly what it would do: POST those credentials to an attacker server, and re-publish itself into my packages. Game over, and all I did was install a dependency. Your credentials are gone before you even read the output.
 
-[ACT 2 — npm 12.] Now the identical command, on npm 12.
+[Click ▶ Act 2 · npm 12.] Now the identical command, on npm 12.
 
-[Let it run.] Look at that. 'One package had install scripts blocked.' The script did not run. npm 12 flips the default — install scripts are OFF unless you explicitly allow them. You stay in control: you run 'npm install-scripts ls' to see what wanted to run, and you approve only the packages you actually trust, which gets recorded in your package.json.
+Look at that. 'One package had install scripts blocked.' The script did not run. npm 12 flips the default — install scripts are OFF unless you explicitly allow them. You stay in control:
+
+[Click ▶ Review.] you run 'npm install-scripts ls' to see what wanted to run, and you approve only the packages you actually trust, which gets recorded in your package.json.
 
 This is the single highest-impact change in the whole talk, because it closes the easiest, most-used door by DEFAULT — it protects people who do nothing. The attacker's favorite vector just stopped working for free."
 
-[BACKUP: demos/backup has captured output if the live run fails. Advance to slide 7.]`);
+[If the launchpad won't load: demos/backup has the captured output. Advance to slide 7.]`);
   }
 
   // ================= SLIDE 7 — credential theft in CI (bridge to CodeQL) =================
@@ -301,7 +302,7 @@ On the right, the fix, and it's beautifully boring. Pass the title in as an envi
 
 I shipped this fix as a merged pull request on the demo repo, and CodeQL's code-injection alert closed automatically when it merged. Detection and prevention in one loop."
 
-[LIVE RUN: OPTIONAL. Fire the issue ONLY IF (1) the launchpad status reads "ENABLED: armed" AND (2) you've practiced the teardown today. Otherwise, if asked to see it run: launchpad, Talk 2, card 4, "Actions injection log" replay. Teardown commands: card 5.]
+[IF ASKED TO SEE IT FIRE: launchpad, Talk 2, card 4, "Actions injection log" tab (captured run; say so). The real run is on GitHub: Actions run 37133006732. Not firing it live in the interview.]
 [Advance to slide 9.]`);
   }
 

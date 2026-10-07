@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Demo Launchpad</title>
-<meta name="description" content="Launch steps, code, and backup replays for the CodeQL and supply-chain demos.">
+<meta name="description" content="Launch steps, code, and captured run output for the CodeQL and supply-chain demos.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='%233fb950' d='M8 0 1.5 2.5v5C1.5 11.6 4.3 15 8 16c3.7-1 6.5-4.4 6.5-8.5v-5Z'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,8 +44,8 @@
 
     <div class="grid">
       <article class="card">
-        <h2><span class="num">1</span> <span class="presenter">Run it live (local, offline-safe)</span><span class="audience">Run it live</span></h2>
-        <p class="hint presenter">Pre-build the database before the talk (run once). On stage, add <code>-SkipBuild</code> for a fast start.</p>
+        <h2><span class="num">1</span> <span class="presenter">Run it yourself (prep &amp; dry run only)</span><span class="audience">Run it yourself</span></h2>
+        <p class="hint presenter">Not for the interview: on stage you present card 4. Use this to rehearse or if they ask to run it themselves later.</p>
         <div class="cmd" data-copy><code>cd C:\Code\GHJ\demos\codeql; .\run-codeql-demo.ps1</code></div>
         <div class="cmd" data-copy><code>cd C:\Code\GHJ\demos\codeql; .\run-codeql-demo.ps1 -SkipBuild</code></div>
         <ul class="beats presenter">
@@ -78,8 +78,8 @@
     </article>
 
     <article class="card wide">
-      <h2><span class="num">4</span> <span class="presenter">Backup: replay of a real run</span><span class="audience">Run output</span> <span class="tag presenter">captured Oct 6</span></h2>
-      <p class="hint presenter">If the CLI stalls, replay this and keep narrating. It's the actual output with the build noise removed.</p>
+      <h2><span class="num">4</span> <span class="presenter">The demo: captured run</span><span class="audience">Run output</span> <span class="tag presenter">captured Oct 6</span></h2>
+      <p class="hint presenter">This is the demo. Click ▶ once per act (slide 6: Build DB, Act 1; slide 8: Acts 2, 3). Say once that you captured it ahead of time. It's the real Oct 6 output with the build noise removed.</p>
       <div class="term" data-replay="codeql"></div>
     </article>
   </section>
@@ -91,14 +91,14 @@
       <h1>Breaking the chain: npm &amp; GitHub Actions</h1>
       <p class="lede">Same <code>npm install</code>, two npm versions. npm 11 runs the malicious <code>postinstall</code>. npm 12 blocks it by default. Then CI is the other door.</p>
       <ol class="runorder presenter">
-        <li>Slides 1–4</li><li class="demo">Live demo · slides 5–6</li><li>Slide 7</li><li class="walk">Walk-through · slide 8</li><li>Slides 9–13</li><li>Q&amp;A</li>
+        <li>Slides 1–4</li><li class="demo">Demo · slides 5–6</li><li>Slide 7</li><li class="walk">Walk-through · slide 8</li><li>Slides 9–13</li><li>Q&amp;A</li>
       </ol>
     </div>
 
     <div class="grid">
       <article class="card">
         <h2><span class="num">1</span> npm install-scripts demo (local)</h2>
-        <p class="hint presenter">Run <code>-Prep</code> once on good wifi to cache npm 11 &amp; 12. Needs Node ≥ 24.15 for npm 12. Older Node still blocks, but prints an engine warning.</p>
+        <p class="hint presenter">Not for the interview: on stage you present card 4. To rehearse, run <code>-Prep</code> once on good wifi to cache npm 11 &amp; 12. Needs Node ≥ 24.15 for npm 12. Older Node still blocks, but prints an engine warning.</p>
         <div class="cmd presenter" data-copy><code>cd C:\Code\GHJ\demos\supply-chain\npm-install-scripts; .\run-demo.ps1 -Prep</code></div>
         <div class="cmd" data-copy><code>cd C:\Code\GHJ\demos\supply-chain\npm-install-scripts; .\run-demo.ps1</code></div>
         <div class="cmd presenter" data-copy><code>node -v</code></div>
@@ -110,7 +110,7 @@
       </article>
 
       <article class="card">
-        <h2><span class="num">2</span> <span class="presenter">Optional: live Actions injection</span><span class="audience">Live Actions injection</span></h2>
+        <h2><span class="num">2</span> <span class="presenter">Live Actions injection (not planned for the interview)</span><span class="audience">Actions injection</span></h2>
         <div class="status" id="wfStatus">
           <span class="dot"></span><span class="status-text">Checking demo workflow…</span>
           <button class="mini" id="wfRefresh" aria-label="Refresh status">↻</button>
@@ -152,7 +152,8 @@
     </article>
 
     <article class="card wide">
-      <h2><span class="num">4</span> <span class="presenter">Backup replays</span><span class="audience">Run output</span> <span class="tag presenter">captured runs</span></h2>
+      <h2><span class="num">4</span> <span class="presenter">The demo: captured runs</span><span class="audience">Run output</span> <span class="tag presenter">captured runs</span></h2>
+      <p class="hint presenter">Slides 5–6: <b>npm 11 vs 12</b>, click ▶ per act (Act 1, Act 2, Review). If asked to see the Actions attack fire: <b>Actions injection log</b>. Say once that these were captured ahead of time.</p>
       <div class="codetabs" data-group="rp">
         <button data-replaytab="npm" aria-selected="true">npm 11 vs 12</button>
         <button data-replaytab="actions" aria-selected="false">Actions injection log</button>
@@ -174,14 +175,14 @@
   <section class="panel" data-panel="panic" hidden>
     <div class="hero">
       <p class="eyebrow">If something breaks</p>
-      <h1>Switch to the backup, keep talking, move on</h1>
-      <p class="lede">Don't debug on stage. Every demo has a fallback on this site.</p>
+      <h1>Keep talking, move on</h1>
+      <p class="lede">Don't debug on stage. Every demo has a fallback.</p>
     </div>
     <div class="grid three">
-      <article class="card"><h3>No network</h3><p>Both <b>local</b> demos still work: the CodeQL CLI and npm (if you ran <code>-Prep</code>). Skip the GitHub UI beats.</p></article>
-      <article class="card"><h3>CodeQL CLI stalls</h3><p>Go to Talk 1 → <b>Backup replay</b>. Step through Act 1 → 2 → 3 exactly like the real script.</p><button class="btn" data-goto="codeql">Open CodeQL replay</button></article>
-      <article class="card"><h3>npm download fails</h3><p>Go to Talk 2 → <b>Backup replays → npm 11 vs 12</b>.</p><button class="btn" data-goto="supply">Open npm replay</button></article>
-      <article class="card"><h3>Actions slow or failing</h3><p>Replay the captured run log. It shows the <code>PWNED</code> line and the base64 fake secret.</p><a class="btn" target="_blank" rel="noopener" href="https://github.com/rod-trent/octo-notes-demo/actions/runs/37133006732">Captured run ↗</a></article>
+      <article class="card"><h3>No network</h3><p>The launchpad may not load. Open the captured output locally: <code>demos/backup/</code>. Skip the GitHub UI beats.</p></article>
+      <article class="card"><h3>CodeQL output</h3><p>Talk 1 → card 4. Or locally: <code>demos/backup/codeql-1..3-*.csv</code>.</p><button class="btn" data-goto="codeql">Open Talk 1</button></article>
+      <article class="card"><h3>npm output</h3><p>Talk 2 → card 4 → <b>npm 11 vs 12</b>.</p><button class="btn" data-goto="supply">Open Talk 2</button></article>
+      <article class="card"><h3>Actions injection</h3><p>Talk 2 → card 4 → <b>Actions injection log</b>. It shows the <code>PWNED</code> line and the base64 fake secret.</p><a class="btn" target="_blank" rel="noopener" href="https://github.com/rod-trent/octo-notes-demo/actions/runs/37133006732">Captured run on GitHub ↗</a></article>
       <article class="card"><h3>Laptop dies</h3><p>The decks carry the full script in the notes. This site works from any device.</p></article>
       <article class="card"><h3>Links</h3><p><a target="_blank" rel="noopener" href="https://github.com/rod-trent/octo-notes-demo">github.com/rod-trent/octo-notes-demo</a><br><a target="_blank" rel="noopener" href="https://github.com/rod-trent/GHJ">github.com/rod-trent/GHJ</a></p></article>
     </div>

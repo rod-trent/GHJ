@@ -1,6 +1,6 @@
 # Dry-run & day-of checklist
 
-Two talks, three live demos. Work top to bottom. Boxes you can tick: `[ ]`.
+Two talks; the demos are presented from captured runs on the launchpad. Work top to bottom. Boxes you can tick: `[ ]`.
 
 ---
 
@@ -42,7 +42,7 @@ Two talks, three live demos. Work top to bottom. Boxes you can tick: `[ ]`.
 - [ ] **Terminal font bumped up** (≥ 18pt) for the demo terminals.
 - [ ] Browser logged in to GitHub; close noisy tabs, notifications, Slack/email.
 - [ ] These tabs pre-opened:
-  - [ ] **Demo Launchpad**: <https://rt-demo-launchpad.vercel.app> (launch steps + backup replays)
+  - [ ] **Demo Launchpad**: <https://rt-demo-launchpad.vercel.app> (launch steps + the captured runs you present)
   - [ ] If you'll screen-share it: open <https://rt-demo-launchpad.vercel.app/?view=audience> (or press **A**). The amber
     "Presenter view · A" badge in the header means coaching is showing; it disappears in audience view.
     Panic card (not linked anywhere): `/#panic`
@@ -64,10 +64,11 @@ Two talks, three live demos. Work top to bottom. Boxes you can tick: `[ ]`.
 - [ ] Confirm you saw: Act 1 misses SQLi → Act 2 finds both + safe one silent → Act 3 query.
 - [ ] **Don't Ctrl+C a full (non-`-SkipBuild`) run.** It wipes the pre-built database first. If the database
   is missing, `-SkipBuild` now rebuilds it automatically (~1 min), so run it once more after any interruption.
-- [ ] **Backup ready:** `demos/backup/codeql-1..4-*.csv` open in an editor, in case the CLI stalls.
+- [ ] **On stage you present the captured run** (launchpad, Talk 1 → card 4), not a live CLI run. Click ▶ through
+  every act once so you know the rhythm. Fallback if the site won't load: `demos/backup/codeql-1..4-*.csv`.
 - [ ] Decide whether you'll also show the live alerts in the Security tab (needs network).
 
-**Run order on stage:** slides 1–5 → **demo Act 1** (slide 6) → slide 7 → **demo Acts 2–3**
+**Run order on stage:** slides 1–5 → **demo Act 1** (slide 6, captured run) → slide 7 → **demo Acts 2–3**
 (slide 8) → slides 9–12 → Q&A.
 
 ---
@@ -82,11 +83,14 @@ Two talks, three live demos. Work top to bottom. Boxes you can tick: `[ ]`.
   ```
 - [ ] Confirm: npm 11 runs the postinstall ("harvested … / would POST / would re-publish");
   npm 12 **blocks** it.
+- [ ] **On stage you present the captured run** (launchpad, Talk 2 → card 4 → npm 11 vs 12). Click ▶ through
+  Act 1, Act 2, Review once.
 
 **Slide 8 is a walk-through, not a live demo** — you just talk over the vulnerable-vs-hardened
-slide. The live attack below is now **OPTIONAL** (only if they ask to see it fire).
+slide. **Not firing the attack live in the interview**; if asked, show the captured Actions log (Talk 2 → card 4).
+The steps below are kept for reference only.
 
-**Optional live Actions injection (needs network)**
+**Live Actions injection (reference only, needs network)**
 - [ ] **Enable the demo workflow** (it's disabled by default):
   ```bash
   gh workflow enable "Issue triage (DEMO - vulnerable)" -R rod-trent/octo-notes-demo
@@ -101,19 +105,20 @@ slide. The live attack below is now **OPTIONAL** (only if they ask to see it fir
   on `main`, plus the merged PR #2.
 - [ ] **Backup ready:** `demos/backup/actions-injection-run-log.txt` (a captured PWNED run).
 
-**Run order on stage:** slides 1–4 → **live demo** (slides 5–6) → slide 7 → **walk-through**
-(slide 8, not performed) → slides 9–13 → Q&A. (Offer the live injection only if asked.)
+**Run order on stage:** slides 1–4 → **demo** (slides 5–6, captured run) → slide 7 → **walk-through**
+(slide 8, not performed) → slides 9–13 → Q&A.
 
 ---
 
 ## During each talk — reminders
 - [ ] Problem first — don't jump to features.
 - [ ] Narrate every demo step: what you're doing, why, what to watch for.
-- [ ] If a live demo misbehaves: **switch to the backup file, keep talking, move on** — don't debug on stage.
+- [ ] Demos are **captured runs**: say once per talk that you ran them ahead of time. If the launchpad won't load,
+  open `demos/backup/`, keep talking, move on. Don't debug on stage.
 - [ ] Watch the clock in Presenter View. **Checkpoints:** CodeQL, start slide 6 by ~4:00 (past ~4:30 → skip
   slide 10). Supply chain, done with slides 1–4 by ~3:00.
-- [ ] Supply chain slide 8: narrate from the **launchpad diff** (Talk 2 → card 3). Fire the live issue **only** if
-  the launchpad (or `gh workflow list`) shows the demo workflow enabled **and** you've rehearsed teardown that day.
+- [ ] Supply chain slide 8: narrate from the **launchpad diff** (Talk 2 → card 3). If asked to see it fire, show the
+  **Actions injection log** tab (Talk 2 → card 4); don't fire it live.
 - [ ] Mention the cross-link once per talk (CodeQL ↔ supply chain = detection + prevention).
 
 ---
@@ -134,8 +139,7 @@ slide. The live attack below is now **OPTIONAL** (only if they ask to see it fir
 ---
 
 ## Panic card (if everything breaks)
-- No network → both **local** demos (CodeQL CLI, npm) still work; skip the GitHub-UI beats.
-- CodeQL CLI fails → walk `demos/backup/codeql-*.csv`.
-- Actions slow/failing → walk `demos/backup/actions-injection-run-log.txt`.
+- No network / launchpad won't load → walk the captured output in `demos/backup/` (`codeql-*.csv`,
+  `actions-injection-run-log.txt`); skip the GitHub-UI beats.
 - Laptop dies → the decks carry the full script in the notes; the one-pager PDF summarizes both talks.
 - Repo: `github.com/rod-trent/GHJ` · Demo app: `github.com/rod-trent/octo-notes-demo`
