@@ -38,7 +38,19 @@ Two talks; the demos are presented from captured runs on the launchpad. Work top
 ## T-minus 1 hour — pre-flight at the venue
 
 - [ ] Laptop charged + charger plugged in; screen-sleep / screensaver **off**.
-- [ ] Display mirroring tested on the projector; font sizes legible from the back.
+- [ ] **Teams screen share, two monitors:**
+  - **Monitor A (shared):** the PowerPoint slideshow and the launchpad browser window, both maximized here.
+  - **Monitor B (yours):** Presenter View with the notes, plus Teams itself.
+  - PowerPoint → Slide Show → set **Monitor** to A and tick **Use Presenter View**.
+  - In Teams, Share → **Screen** → pick monitor A. Don't share the PowerPoint window (the audience won't see the
+    browser when you switch) and don't use PowerPoint Live (no browser at all).
+  - Switching: **Alt+Tab** to the launchpad; to come back, **click the slideshow** on monitor A so the arrow keys
+    drive the slides again. Your notes on monitor B stay visible the whole time.
+  - Launchpad in **audience view**, one tab per talk: `/?view=audience#codeql` and `/?view=audience#supply`.
+  - Browser zoom ~**125%** so the terminal text survives Teams compression, then re-check that the replay lines
+    aren't cut off on the right (see the replay check below).
+  - Teams/Windows notifications off (Do not disturb + Focus assist).
+  - Do a 2-minute test share with someone (or a second Teams client) and confirm they see both the slides and the browser.
 - [ ] **Terminal font bumped up** (≥ 18pt) for the demo terminals.
 - [ ] Browser logged in to GitHub; close noisy tabs, notifications, Slack/email.
 - [ ] These tabs pre-opened:

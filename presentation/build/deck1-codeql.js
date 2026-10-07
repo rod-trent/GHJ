@@ -282,7 +282,7 @@ The result isn't just a line number. It's the full path: where the tainted data 
 It also has a deliberate blind spot. The default scanner is going to miss the SQL injection, and that miss is the whole story."
 
 [CLOCK CHECK: you should be under 4:00 here. If you start slide 6 past ~4:30, you're behind: plan to SKIP slide 10.]
-[Advance to slide 6, then switch to the launchpad.]`);
+[Advance to slide 6, then Alt+Tab to the launchpad: audience view, Talk 1, scrolled to card 4.]`);
   }
 
   // ================= SLIDE 6 — DEMO Act 1 =================
@@ -314,7 +314,7 @@ It also has a deliberate blind spot. The default scanner is going to miss the SQ
       y += 0.82;
     }
     s.addNotes(
-`[DEMO — ACT 1 — ~90 sec]  >>> SWITCH TO LAUNCHPAD: Talk 1, card 4 "Run output" <<<
+`[DEMO — ACT 1 — ~90 sec]  >>> SWITCH TO LAUNCHPAD (Alt+Tab): Talk 1, card 4 "Run output" <<<
 [CLOCK: past ~4:30 at this point? Then skip slide 10 later (go 9 -> 11).]
 (Captured run, not live. Click ▶ once per act; don't use "Show all".)
 
@@ -332,7 +332,8 @@ But the SQL injection? Missed. Both variants. So, a question for you: why would 
 
 It's not a CodeQL bug. CodeQL doesn't yet know this library. node:sqlite is new, and the engine doesn't know that .prepare() and .exec() are where SQL executes, the 'sink.' It sees the user input. It just can't see the finish line. That's not a dead end; it's the most interesting moment in the talk."
 
-[If the launchpad won't load: demos/backup/codeql-1-default-suite.csv. Advance to slide 7.]`);
+[If the launchpad won't load: demos/backup/codeql-1-default-suite.csv.]
+>>> BACK TO POWERPOINT (click the slideshow) <<<  Don't reload the launchpad. Advance to slide 7.`);
   }
 
   // ================= SLIDE 7 — models as data =================
@@ -379,7 +380,7 @@ This is the part I find genuinely elegant, and it's the heart of how the Securit
 
 Let's prove it — same scan, with the model this time."
 
-[Advance to slide 8 — continue the demo.]`);
+[Advance to slide 8, then Alt+Tab back to the launchpad. Card 4 is waiting on ▶ Act 2.]`);
   }
 
   // ================= SLIDE 8 — DEMO Act 2 + 3 =================
@@ -417,7 +418,7 @@ Let's prove it — same scan, with the model this time."
       mono("TaintTracking::flowPath(src, sink)", { color: HEX.sub }),
     ], { x: rx + 0.25, y: 2.15, w: W - rx - M - 0.5, h: 4.1, fontSize: 12.5, isTextBox: true, valign: "top" });
     s.addNotes(
-`[DEMO — ACTS 2 & 3 — ~2 min]  >>> BACK TO LAUNCHPAD: Talk 1, card 4 <<<
+`[DEMO — ACTS 2 & 3 — ~2 min]  >>> BACK TO LAUNCHPAD (Alt+Tab): Talk 1, card 4 <<<
 (Same captured run; it's waiting on ▶ Act 2.)
 
 "Act two. Exact same security suite, exact same database — the only thing I've added is that one sink-model row.
@@ -430,11 +431,16 @@ And here's the part I promised you — look: the parameterized endpoint on line 
 
 [Click ▶ Act 3.]
 
-Last act — let me pull back the curtain and show you the actual query, so this isn't magic. It's three ideas. A SOURCE: 'RemoteFlowSource' — that's anything an attacker controls, any request parameter, header, body. A SINK: our node:sqlite call, the one we just modeled. And then 'TaintTracking dot flowPath' — that's the engine connecting the two, following the data through every hop in between.
+Last act: our own query. Same two lines, 11 and 20, found by about twenty-five lines of QL I wrote. Let me pull back the curtain and show you that query, so this isn't magic.
+
+>>> BACK TO POWERPOINT (click the slideshow) <<<  The query is on the right side of this slide.
+
+ It's three ideas. A SOURCE: 'RemoteFlowSource' — that's anything an attacker controls, any request parameter, header, body. A SINK: our node:sqlite call, the one we just modeled. And then 'TaintTracking dot flowPath' — that's the engine connecting the two, following the data through every hop in between.
 
 That's it. Roughly twenty-five lines of readable logic, and it describes the ENTIRE class of SQL-injection bug — not the one I grepped for, all of them."
 
-[If the launchpad won't load: demos/backup/codeql-2 and codeql-3 CSVs. Advance to slide 9.]`);
+[If the launchpad won't load: demos/backup/codeql-2 and codeql-3 CSVs, then come back to this slide for the query.]
+[Advance to slide 9.]`);
   }
 
   // ================= SLIDE 9 — beyond your code (bridge) =================

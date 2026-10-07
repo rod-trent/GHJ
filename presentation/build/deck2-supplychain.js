@@ -187,7 +187,7 @@ Look at the package.json on the slide — this is my stand-in malicious dependen
 
 The three properties on the bottom are why attackers love it: it runs silently, it has full access to your environment, and it spreads instantly. For years, this was on by default. Watch what npm 12 does about it."
 
-[Advance to slide 6, then switch to the launchpad.]`);
+[Advance to slide 6, then Alt+Tab to the launchpad: audience view, Talk 2, scrolled to card 4.]`);
   }
 
   // ================= SLIDE 6 — DEMO 1 results =================
@@ -211,7 +211,7 @@ The three properties on the bottom are why attackers love it: it runs silently, 
     await iconChip(s, FA.FaCircleCheck, rx + 0.25, 5.75, 0.5, HEX.green);
     s.addText("Script never ran. You decide, explicitly.", { x: rx + 0.9, y: 5.78, w: 5, h: 0.45, fontFace: "Calibri", fontSize: 12.5, color: HEX.greenLt, bold: true, valign: "middle", isTextBox: true });
     s.addNotes(
-`[DEMO — ~3 min]  >>> SWITCH TO LAUNCHPAD: Talk 2, card 4 "Run output", npm 11 vs 12 tab <<<
+`[DEMO — ~3 min]  >>> SWITCH TO LAUNCHPAD (Alt+Tab): Talk 2, card 4 "Run output", npm 11 vs 12 tab <<<
 (Captured run, not live. Click ▶ once per act; don't use "Show all".)
 
 "Same project, same dependency, two different versions of npm. The installs take a while, so I captured this run ahead of time. It's the real output.
@@ -228,7 +228,8 @@ Look at that. 'One package had install scripts blocked.' The script did not run.
 
 This is the single highest-impact change in the whole talk, because it closes the easiest, most-used door by DEFAULT — it protects people who do nothing. The attacker's favorite vector just stopped working for free."
 
-[If the launchpad won't load: demos/backup has the captured output. Advance to slide 7.]`);
+[If the launchpad won't load: demos/backup has the captured output.]
+>>> BACK TO POWERPOINT (click the slideshow) <<<  Advance to slide 7.`);
   }
 
   // ================= SLIDE 7 — credential theft in CI (bridge to CodeQL) =================
@@ -264,7 +265,7 @@ Here's the nice connection — and it ties directly to my CodeQL talk. We can DE
 
 Let me walk you through the script-injection one — because it's genuinely a little shocking how easy it is."
 
-[Advance to slide 8, then switch to the launchpad: Talk 2 tab, card 3 (vulnerable vs hardened diff).]`);
+[Advance to slide 8, then Alt+Tab to the launchpad: Talk 2, scroll UP to card 3 (vulnerable vs hardened).]`);
   }
 
   // ================= SLIDE 8 — DEMO 2 =================
@@ -302,8 +303,8 @@ On the right, the fix, and it's beautifully boring. Pass the title in as an envi
 
 I shipped this fix as a merged pull request on the demo repo, and CodeQL's code-injection alert closed automatically when it merged. Detection and prevention in one loop."
 
-[IF ASKED TO SEE IT FIRE: launchpad, Talk 2, card 4, "Actions injection log" tab (captured run; say so). The real run is on GitHub: Actions run 37133006732. Not firing it live in the interview.]
-[Advance to slide 9.]`);
+[IF ASKED TO SEE IT FIRE: still on the launchpad, scroll to card 4, "Actions injection log" tab, ▶ Run log then ▶ Decode (captured run; say so). The real run is on GitHub: Actions run 37133006732. Not firing it live in the interview.]
+>>> BACK TO POWERPOINT (click the slideshow) <<<  Advance to slide 9.`);
   }
 
   // ================= SLIDE 9 — harden the pipeline =================
