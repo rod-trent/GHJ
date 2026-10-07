@@ -257,7 +257,7 @@ jobs:
           'Uncontrolled data used in path expression /src/routes/attachments.js 12',
           'Reflected cross-site scripting            /src/routes/preview.js     9',
           '',
-          'd|# no SQL injection: CodeQL doesn\'t know node:sqlite is a SQL sink (yet)',
+          'd|# no SQL injection found',
         ] },
         { label: 'Act 2', lines: [
           '',
