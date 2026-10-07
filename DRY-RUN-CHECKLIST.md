@@ -51,7 +51,6 @@ Two talks; the demos are presented from captured runs on the launchpad. Work top
     aren't cut off on the right (see the replay check below).
   - Teams/Windows notifications off (Do not disturb + Focus assist).
   - Do a 2-minute test share with someone (or a second Teams client) and confirm they see both the slides and the browser.
-- [ ] **Terminal font bumped up** (≥ 18pt) for the demo terminals.
 - [ ] Browser logged in to GitHub; close noisy tabs, notifications, Slack/email.
 - [ ] These tabs pre-opened:
   - [ ] **Demo Launchpad**: <https://rt-demo-launchpad.vercel.app> (launch steps + the captured runs you present)
