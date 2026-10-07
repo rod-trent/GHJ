@@ -70,7 +70,6 @@ Two talks; the demos are presented from captured runs on the launchpad. Work top
 
 ## Talk 1 — CodeQL (demo pre-flight)
 
-- [ ] Terminal open at repo root; CodeQL CLI on PATH or use full path.
 - [ ] Dry-run the 3-act script once so the DB is pre-built (keeps the live run snappy):
   ```bash
   cd demos/codeql && pwsh -File run-codeql-demo.ps1
