@@ -51,6 +51,11 @@
   $$('[data-goto]').forEach((b) => b.addEventListener('click', () => showTab(b.dataset.goto)));
   const initial = location.hash.slice(1) || store.get('tab') || 'codeql';
   showTab($(`[data-panel="${initial}"]`) ? initial : 'codeql');
+  // a hash-only change (link or address bar) doesn't reload the page, so follow it here
+  window.addEventListener('hashchange', () => {
+    const name = location.hash.slice(1);
+    if ($(`[data-panel="${name}"]`)) showTab(name);
+  });
 
   // ---------- copy buttons ----------
   $('#payloadText').textContent = PAYLOAD;
