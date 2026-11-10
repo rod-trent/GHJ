@@ -1,11 +1,11 @@
 # Speaker cheat sheet
 
-Two talks. Problem first, then tech, then demo, then takeaway. Each slide has full
-speaker notes in the .pptx — this is the one-page version for the day.
+Two sessions. Problem first, then tech, then demo, then takeaway. Each slide has full
+speaker notes in the .pptx — this is the one-page version for delivery.
 
 ---
 
-## Talk 1 — CodeQL (12 slides, ~11 min scripted + interruptions)
+## Session 1 — CodeQL (12 slides, ~11 min scripted + interruptions)
 
 | Beat | Slides | ~min |
 |---|---|---|
@@ -17,17 +17,17 @@ speaker notes in the .pptx — this is the one-page version for the day.
 | **DEMO Act 1:** default suite misses the SQLi | 6 | 1.5 |
 | Models-as-data: one sink-model row | 7 | 1.5 |
 | **DEMO Acts 2–3:** SQLi found + the QL query | 8 | 1.5 |
-| Bridge: CodeQL also scans Actions (→ talk 2) | 9 | 1.5 |
+| Bridge: CodeQL also scans Actions (→ session 2) | 9 | 1.5 |
 | *Optional:* in the PR (skip if behind; don't sell Autofix) | 10 | 0.75 |
 | Impact + takeaways | 11–12 | 2 |
 
 **One-liner:** *"Describe the bug once, catch it everywhere."*
 
-**Demo:** captured run on the launchpad (Talk 1 → card 4 "Run output"), click ▶ per act. Say once that you captured it ahead of time.
+**Demo:** captured run on the launchpad (Session 1 → card 4 "Run output"), click ▶ per act. Say once that you captured it ahead of time.
 
 ---
 
-## Talk 2 — Supply chain (13 slides, ~13 min scripted + interruptions)
+## Session 2 — Supply chain (13 slides, ~13 min scripted + interruptions)
 
 | Beat | Slides | ~min |
 |---|---|---|
@@ -37,7 +37,7 @@ speaker notes in the .pptx — this is the one-page version for the day.
 | **⏱ Checkpoint: slides 1–4 done by ~3:00** | | |
 | **DEMO:** install scripts — npm 11 runs it, npm 12 blocks it (protect this) | 5–6 | 3 |
 | CI is the other door (script injection, pwn request) → CodeQL | 7 | 1 |
-| **Walk-through from the launchpad diff** (Talk 2 → card 3); if asked to see it fire, show the captured Actions log (card 4) | 8 | 1.5 |
+| **Walk-through from the launchpad diff** (Session 2 → card 3); if asked to see it fire, show the captured Actions log (card 4) | 8 | 1.5 |
 | Prevention: safe-by-default CI | 9 | 1 |
 | Prevention: kill the token (OIDC, staged publish, revoke) | 10 | 1 |
 | Containment: Dependabot cooldown | 11 | 0.5 |
@@ -45,9 +45,9 @@ speaker notes in the .pptx — this is the one-page version for the day.
 
 **One-liner:** *"Make the attack expensive at every step."*
 
-**One demo** (slides 5–6): captured run on the launchpad (Talk 2 → card 4, **npm 11 vs 12**), click ▶ per act.
+**One demo** (slides 5–6): captured run on the launchpad (Session 2 → card 4, **npm 11 vs 12**), click ▶ per act.
 Say once that you captured it ahead of time. Slide 8 is a **visual walk-through**, not performed.
-No live Actions injection in the interview; if asked, show the **Actions injection log** tab.
+No live Actions injection during the session; if asked, show the **Actions injection log** tab.
 
 ---
 
@@ -77,6 +77,6 @@ No live Actions injection in the interview; if asked, show the **Actions injecti
 - *"Won't blocking install scripts break my build?"* — You approve the ones you need once
   (`npm install-scripts approve`), recorded in `package.json`. Most packages don't need them.
 - *"Can't an attacker just name the flag / use a different sink?"* — The checkout flag is
-  deliberately loud for review/CodeQL; new sinks are handled by adding a model (the talk's point).
+  deliberately loud for review/CodeQL; new sinks are handled by adding a model (the session's point).
 - *"OIDC — what if I publish from somewhere other than GitHub/CircleCI?"* — Trusted publishing is
   per-provider; otherwise scope a short-lived token + staged publishing.
