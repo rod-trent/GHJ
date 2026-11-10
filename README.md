@@ -1,71 +1,58 @@
-# GitHub Security Lab interview — technical case studies
+# Open Source CodeQL & Supply Chain Security Sessions
 
-Two ~10–15 minute technical presentations, each with a live, offline-capable demo.
-Both talks share one story: **CodeQL *detects* vulnerabilities in the code you write;
-the supply-chain defenses *prevent* attacks on the code and pipelines you don't.**
+Two focused technical sessions with live demos that anyone can use to understand CodeQL, semantic code analysis, and practical supply-chain defenses.
 
-| # | Talk | Deck | Demo | Runbook |
+Both sessions share one story: **CodeQL *detects* vulnerabilities in the code you write; the supply-chain defenses *prevent* attacks on the code and pipelines you don't.**
+
+| # | Session | Deck | Demo | Runbook |
 |---|---|---|---|---|
 | 1 | **CodeQL — Find the bug class, not just the bug** | [`presentation/CodeQL-Find-the-Bug-Class.pptx`](presentation/CodeQL-Find-the-Bug-Class.pptx) | `demos/codeql/run-codeql-demo.ps1` | [RUNBOOK-CodeQL.md](demos/RUNBOOK-CodeQL.md) |
-| 2 | **Breaking the chain — disrupting supply chain attacks on npm & GitHub Actions** | [`presentation/Supply-Chain-Breaking-the-Chain.pptx`](presentation/Supply-Chain-Breaking-the-Chain.pptx) | `demos/supply-chain/npm-install-scripts/run-demo.ps1` + live Actions injection | [RUNBOOK-SupplyChain.md](demos/RUNBOOK-SupplyChain.md) |
+| 2 | **Breaking the chain — disrupting supply chain attacks on npm & GitHub Actions** | [`presentation/Supply-Chain-Breaking-the-Chain.pptx`](presentation/Supply-Chain-Breaking-the-Chain.pptx) | `demos/supply-chain/npm-install-scripts/run-demo.ps1` + Actions examples | [RUNBOOK-SupplyChain.md](demos/RUNBOOK-SupplyChain.md) |
 
-**Why these two** (of the five options): they're the most technically demonstrable with
-real tooling, they reinforce each other (detect ↔ prevent), and both demos run locally so a
-flaky conference network can't sink them. CodeQL even scans Actions workflows, so the same
-engine appears in both talks.
+These materials are designed so you can:
+- Learn the concepts yourself
+- Run the demos locally (most work offline)
+- Deliver the sessions at your own user group, meetup, internal training, or conference
+- Extend, improve, or translate them
 
-## Demo Launchpad (web)
+## Demo Launchpad
 
-**<https://rt-demo-launchpad.vercel.app>** (source in `site/`, static, deployed on Vercel). One
-tab per talk with copy-ready launch commands, the code on screen, a live check of whether the
-vulnerable demo workflow is armed, a pre-filled payload-issue link, and **terminal replays of real
-runs** for every demo, which is what gets presented. **Two views:** presenter (default, with timings, run order,
-talking points, teardown) and **audience** (`?view=audience`, or press **A** to toggle), which hides the coaching
-for screen sharing. A hidden panic card lives at `#panic`. **Auto-deploys on every push to `main`** (Vercel project
-root = `site/`); to deploy without pushing, run `npx vercel deploy --prod` from the **repo root**.
+**<https://rt-demo-launchpad.vercel.app>** (source in `site/`). One tab per session with copy-ready launch commands, the code on screen, terminal replays of real runs, and presenter vs audience views (press **A** or use `?view=audience`).
 
 ## The shared demo app
 
-[`github.com/rod-trent/octo-notes-demo`](https://github.com/rod-trent/octo-notes-demo)
-(public, **intentionally vulnerable**) — a ~60-line Express + `node:sqlite` notes API with
-SQL injection, path traversal, XSS, and two vulnerable Actions workflows. Code scanning is
-enabled; it currently reports **7 open alerts (5 code + 2 workflow)**; a third workflow alert was auto-closed when the fix (PR #2) merged. A copy also lives here
-under `demos/octo-notes-demo/`.
+[`github.com/rod-trent/octo-notes-demo`](https://github.com/rod-trent/octo-notes-demo) (public, **intentionally vulnerable**) — a small Express + `node:sqlite` notes API with SQL injection, path traversal, XSS, and vulnerable Actions workflows. A copy also lives under `demos/octo-notes-demo/`.
+
+Code scanning is enabled on the live repo so you can see the alerts.
 
 ## Repository layout
 
 ```
 presentation/
-  CodeQL-Find-the-Bug-Class.pptx          # Deck 1 (12 slides, FULL talk script in notes)
-  Supply-Chain-Breaking-the-Chain.pptx    # Deck 2 (13 slides, FULL talk script in notes)
-  One-Pager-Leave-Behind.pptx / .pdf      # 2-page handout (one page per talk)
-  build/                                   # generator scripts (pptxgenjs) + QA renders
+  CodeQL-Find-the-Bug-Class.pptx          # Session 1 (full speaker notes in the deck)
+  Supply-Chain-Breaking-the-Chain.pptx    # Session 2 (full speaker notes in the deck)
+  One-Pager-Leave-Behind.pptx / .pdf      # 2-page handout
+  build/                                   # generator scripts (pptxgenjs)
 demos/
-  octo-notes-demo/        # the vulnerable app, model pack, custom queries, workflows
+  octo-notes-demo/        # the vulnerable app + models + workflows
   codeql/                 # run-codeql-demo.ps1 + custom QL queries
   supply-chain/
-    npm-install-scripts/  # npm 11 vs 12 install-script demo (simulated, safe payload)
-    hardened-workflows/   # "do this instead" reference workflows (scan clean)
-  backup/                 # pre-captured results for every demo, in case live fails
+    npm-install-scripts/  # npm 11 vs 12 install-script demo (safe simulated payload)
+    hardened-workflows/   # "do this instead" reference workflows
+  backup/                 # pre-captured results if you prefer not to run live
   RUNBOOK-CodeQL.md
   RUNBOOK-SupplyChain.md
-SPEAKER-CHEATSHEET.md     # one page: structure, timings, likely Q&A
-DRY-RUN-CHECKLIST.md      # day-of: pre-flight, per-demo rehearsal, teardown, panic card
-prep/                     # FINAL-LOOP prep beyond the slides:
-  01-Security-Lab-Research-Brief.md   # mission, programs, stats — "why the Lab"
-  02-Candidate-Questions.md           # questions to ask them
-  09-Kevin-Backhouse-Interview.md     # Friday 11:00 behavioral: who he is, hooks, questions
-  03-Technical-QA-Bank.md             # hardened follow-ups + interrupt handling
-  04-Behavioral-Workbook.md           # STAR+Reflection fill-in for all 10 themes
+SPEAKER-CHEATSHEET.md     # structure, timings, key facts, Q&A
+DRY-RUN-CHECKLIST.md      # pre-flight and delivery checklist
 ```
 
-> **Scope note:** the technical case study is one half of the final loop; the **culture &
-> behavioral interview is the other half**. See `prep/` — especially the behavioral workbook,
-> which needs your real stories.
+Every slide carries a full speaker script in its notes (Presenter View).
 
-Every slide carries a **full, word-for-word speaker script** in its notes (open the
-Notes pane or use Presenter View), including demo cues, backup-plan pointers, and slide
-transitions.
+## Contribute & reuse
+
+This is open source. Fork it, improve the demos, add more languages or attack classes, translate the decks, or package it for your community. Pull requests and issues are welcome.
+
+If you deliver these sessions somewhere, a star or a mention is appreciated — and feel free to open a discussion or issue to share how it went.
 
 ## Rebuilding the decks
 
@@ -79,6 +66,4 @@ NODE_PATH="$PWD/node_modules" node onepager.js
 
 ## Safety note
 
-Everything under `demos/` is deliberately insecure or simulates an attack **for teaching
-only**. The npm "malicious" package just prints; it exfiltrates nothing. The vulnerable
-workflows use a fake secret and are gated/disabled. Do not deploy any of it.
+Everything under `demos/` is deliberately insecure or simulates an attack **for teaching only**. The npm "malicious" package just prints; it exfiltrates nothing. The vulnerable workflows use a fake secret and are gated/disabled. Do not deploy any of it.
